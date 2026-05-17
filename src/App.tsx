@@ -43,12 +43,12 @@ function App() {
           </p>
           <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">Board Optimizer</h1>
           <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-            Prosty planer rozkroju dla jednej płyty OSB. Wpisz wymiary, uruchom optymalizację i
-            sprawdź odpady.
+            Prosty planer rozkroju dla wielu płyt OSB. Wpisz wymiary, uruchom optymalizację i
+            sprawdź rozmieszczenie oraz odpady.
           </p>
           <div className="flex items-center gap-2">
-            <Badge variant="secondary">Jedna płyta</Badge>
-            <Badge variant="outline">Obrót wyłączony</Badge>
+            <Badge variant="secondary">Wiele płyt (1..N)</Badge>
+            <Badge variant="outline">Obrót 90° włączony</Badge>
           </div>
         </header>
 

@@ -32,58 +32,82 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
             Wprowadź poprawne wymiary płyty, aby zobaczyć podgląd.
           </p>
         ) : (
-          <div className="rounded-lg border border-border bg-muted/20 p-2">
-          <svg
-            className="h-[min(68vh,560px)] w-full"
-            viewBox={`0 0 ${viewWidth} ${viewHeight}`}
-            role="img"
-            aria-label="Podgląd rozkładu elementów na płycie"
-          >
-            <rect
-              x={0}
-              y={0}
-              width={board.width}
-              height={board.height}
-              fill="#0b1220"
-              stroke="#475569"
-              strokeWidth={Math.max(viewWidth, viewHeight) * 0.005}
-            />
-            {(result?.placed ?? []).map((item) => {
-              const fill = getRowColor(item.rowNumber)
-              return (
-                <g key={item.instanceId}>
+          <div className="space-y-4">
+            {(result?.boards ?? []).map((boardLayout) => (
+              <div
+                key={boardLayout.boardIndex}
+                className="rounded-lg border border-border bg-muted/20 p-2"
+              >
+                <p className="mb-2 text-sm font-medium">
+                  Płyta {boardLayout.boardIndex + 1}
+                </p>
+                <svg
+                  className="h-[min(68vh,560px)] w-full"
+                  viewBox={`0 0 ${viewWidth} ${viewHeight}`}
+                  role="img"
+                  aria-label={`Podgląd rozkładu elementów na płycie ${boardLayout.boardIndex + 1}`}
+                >
                   <rect
-                    x={item.x}
-                    y={item.y}
-                    width={item.width}
-                    height={item.height}
-                    fill={fill}
-                    fillOpacity={0.8}
-                    stroke="#020617"
-                    strokeWidth={Math.max(viewWidth, viewHeight) * 0.002}
+                    x={0}
+                    y={0}
+                    width={board.width}
+                    height={board.height}
+                    fill="#0b1220"
+                    stroke="#475569"
+                    strokeWidth={Math.max(viewWidth, viewHeight) * 0.005}
                   />
-                  <text
-                    x={item.x + item.width / 2}
-                    y={item.y + item.height / 2}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={Math.max(12, Math.min(viewWidth, viewHeight) * 0.03)}
-                    fill="#ffffff"
-                    fontWeight={700}
-                  >
-                    {item.itemNumberInRow}
-                  </text>
-                </g>
-              )
-            })}
-          </svg>
+                  {boardLayout.placed.map((item) => {
+                    const fill = getRowColor(item.rowNumber)
+                    return (
+                      <g key={item.instanceId}>
+                        <rect
+                          x={item.x}
+                          y={item.y}
+                          width={item.width}
+                          height={item.height}
+                          fill={fill}
+                          fillOpacity={0.8}
+                          stroke="#020617"
+                          strokeWidth={Math.max(viewWidth, viewHeight) * 0.002}
+                        />
+                        <text
+                          x={item.x + item.width / 2}
+                          y={item.y + item.height / 2}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize={Math.max(12, Math.min(viewWidth, viewHeight) * 0.03)}
+                          fill="#ffffff"
+                          fontWeight={700}
+                        >
+                          {item.itemNumberInRow}
+                        </text>
+                      </g>
+                    )
+                  })}
+                </svg>
+                <div className="mt-2 grid grid-cols-1 gap-2 text-sm md:grid-cols-3">
+                  <div className="rounded-md border border-border p-2">
+                    <p className="text-muted-foreground">Wykorzystana powierzchnia</p>
+                    <p className="font-medium">{Math.round(boardLayout.usedArea)} mm²</p>
+                  </div>
+                  <div className="rounded-md border border-border p-2">
+                    <p className="text-muted-foreground">Odpad</p>
+                    <p className="font-medium">{Math.round(boardLayout.wasteArea)} mm²</p>
+                  </div>
+                  <div className="rounded-md border border-border p-2">
+                    <p className="text-muted-foreground">Odpad (%)</p>
+                    <p className="font-medium">{boardLayout.wastePercentage.toFixed(1)}%</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
         {result && (
           <>
             <Separator />
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
               <div className="rounded-md border border-border p-3">
                 <p className="text-muted-foreground">Wykorzystana powierzchnia</p>
                 <p className="font-medium">{Math.round(result.usedArea)} mm²</p>
@@ -93,6 +117,10 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                 <p className="font-medium">
                   {Math.round(result.wasteArea)} mm² ({result.wastePercentage.toFixed(1)}%)
                 </p>
+              </div>
+              <div className="rounded-md border border-border p-3">
+                <p className="text-muted-foreground">Liczba płyt</p>
+                <p className="font-medium">{result.boardCount}</p>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">

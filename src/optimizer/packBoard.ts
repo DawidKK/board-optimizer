@@ -1,6 +1,7 @@
 import { MaxRectsPacker } from 'maxrects-packer'
 import type {
   Board,
+  BoardLayout,
   ElementInput,
   ExpandedElement,
   PackResult,
@@ -24,15 +25,17 @@ export const expandElements = (elements: ElementInput[]): ExpandedElement[] =>
   })
 
 export const packBoard = (board: Board, elements: ElementInput[]): PackResult => {
-  const boardArea = Math.max(0, board.width * board.height)
+  const singleBoardArea = Math.max(0, board.width * board.height)
 
   if (!isPositive(board.width) || !isPositive(board.height)) {
     return {
+      boards: [],
+      boardCount: 0,
       placed: [],
       unplaced: [],
-      boardArea,
+      boardArea: singleBoardArea,
       usedArea: 0,
-      wasteArea: boardArea,
+      wasteArea: singleBoardArea,
       wastePercentage: 100,
     }
   }
@@ -52,39 +55,65 @@ export const packBoard = (board: Board, elements: ElementInput[]): PackResult =>
     packer.add(item.width, item.height, item)
   }
 
-  const packedRects = packer.bins[0]?.rects ?? []
   const packedSet = new Set<string>()
+  const boards: BoardLayout[] = packer.bins
+    .map((bin, boardIndex) => {
+      const placed = bin.rects
+        .map((rect) => {
+          if (rect.oversized) {
+            return null
+          }
 
-  const placed: PlacedElement[] = packedRects
-    .map((rect) => {
-      const item = rect.data as ExpandedElement | undefined
+          const item = rect.data as ExpandedElement | undefined
 
-      if (!item) {
-        return null
-      }
+          if (!item) {
+            return null
+          }
 
-      packedSet.add(item.instanceId)
+          packedSet.add(item.instanceId)
+
+          return {
+            instanceId: item.instanceId,
+            sourceId: item.sourceId,
+            rowNumber: item.rowNumber,
+            itemNumberInRow: item.itemNumberInRow,
+            boardIndex,
+            rotated: Boolean(rect.rot),
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height,
+          }
+        })
+        .filter((item): item is PlacedElement => item !== null)
+
+      const usedArea = placed.reduce((sum, item) => sum + item.width * item.height, 0)
+      const boardArea = singleBoardArea
+      const wasteArea = Math.max(0, boardArea - usedArea)
+      const wastePercentage = boardArea > 0 ? (wasteArea / boardArea) * 100 : 0
 
       return {
-        instanceId: item.instanceId,
-        sourceId: item.sourceId,
-        rowNumber: item.rowNumber,
-        itemNumberInRow: item.itemNumberInRow,
-        rotated: Boolean(rect.rot),
-        x: rect.x,
-        y: rect.y,
-        width: rect.width,
-        height: rect.height,
+        boardIndex,
+        placed,
+        boardArea,
+        usedArea,
+        wasteArea,
+        wastePercentage,
       }
     })
-    .filter((item): item is PlacedElement => item !== null)
+    .filter((boardLayout) => boardLayout.placed.length > 0)
 
+  const placed: PlacedElement[] = boards.flatMap((boardLayout) => boardLayout.placed)
   const unplaced = expanded.filter((item) => !packedSet.has(item.instanceId))
+  const boardCount = boards.length
+  const boardArea = boardCount * singleBoardArea
   const usedArea = placed.reduce((sum, item) => sum + item.width * item.height, 0)
   const wasteArea = Math.max(0, boardArea - usedArea)
   const wastePercentage = boardArea > 0 ? (wasteArea / boardArea) * 100 : 0
 
   return {
+    boards,
+    boardCount,
     placed,
     unplaced,
     boardArea,

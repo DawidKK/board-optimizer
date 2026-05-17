@@ -24,6 +24,7 @@ export type PlacedElement = {
   sourceId: string
   rowNumber: number
   itemNumberInRow: number
+  boardIndex: number
   rotated: boolean
   x: number
   y: number
@@ -31,7 +32,18 @@ export type PlacedElement = {
   height: number
 }
 
+export type BoardLayout = {
+  boardIndex: number
+  placed: PlacedElement[]
+  boardArea: number
+  usedArea: number
+  wasteArea: number
+  wastePercentage: number
+}
+
 export type PackResult = {
+  boards: BoardLayout[]
+  boardCount: number
   placed: PlacedElement[]
   unplaced: ExpandedElement[]
   boardArea: number
