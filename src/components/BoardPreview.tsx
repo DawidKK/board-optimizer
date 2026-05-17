@@ -38,7 +38,7 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                 key={boardLayout.boardIndex}
                 className="rounded-lg border border-border bg-muted/20 p-2"
               >
-                <p className="mb-2 text-sm font-medium">
+                <p className="mb-1 text-sm font-medium">
                   Płyta {boardLayout.boardIndex + 1}
                 </p>
                 <svg
@@ -58,6 +58,9 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                   />
                   {boardLayout.placed.map((item) => {
                     const fill = getRowColor(item.rowNumber)
+                    const topLabelY = item.y + 14
+                    const leftLabelX = item.x + 6
+                    const leftLabelY = item.y + item.height / 2
                     return (
                       <g key={item.instanceId}>
                         <rect
@@ -71,11 +74,33 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                           strokeWidth={Math.max(viewWidth, viewHeight) * 0.002}
                         />
                         <text
+                          x={leftLabelX}
+                          y={leftLabelY}
+                          textAnchor="start"
+                          dominantBaseline="middle"
+                          fontSize={Math.max(9, Math.min(viewWidth, viewHeight) * 0.016)}
+                          fill="#000000"
+                          fontWeight={700}
+                        >
+                          {`${Math.round(item.height)} mm`}
+                        </text>
+                        <text
+                          x={item.x + item.width / 2}
+                          y={topLabelY}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize={Math.max(9, Math.min(viewWidth, viewHeight) * 0.016)}
+                          fill="#000000"
+                          fontWeight={700}
+                        >
+                          {`${Math.round(item.width)} mm`}
+                        </text>
+                        <text
                           x={item.x + item.width / 2}
                           y={item.y + item.height / 2}
                           textAnchor="middle"
                           dominantBaseline="middle"
-                          fontSize={Math.max(12, Math.min(viewWidth, viewHeight) * 0.03)}
+                          fontSize={Math.max(10, Math.min(viewWidth, viewHeight) * 0.022)}
                           fill="#ffffff"
                           fontWeight={700}
                         >
