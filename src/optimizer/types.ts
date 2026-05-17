@@ -39,6 +39,17 @@ export type BoardLayout = {
   usedArea: number
   wasteArea: number
   wastePercentage: number
+  largestFreeRectArea: number
+  smallRectsArea: number
+  freeRectCount: number
+}
+
+export type QualityMetrics = {
+  score: number
+  boardsCount: number
+  smallRectsArea: number
+  freeRectCount: number
+  largestFreeRectArea: number
 }
 
 export type PackResult = {
@@ -50,4 +61,5 @@ export type PackResult = {
   usedArea: number
   wasteArea: number
   wastePercentage: number
+  qualityMetrics: QualityMetrics
 }
