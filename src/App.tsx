@@ -54,10 +54,11 @@ function App() {
 
         <Separator />
 
-        <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.2fr]">
-          <div className="flex flex-col gap-6">
-          <BoardForm board={board} onChange={setBoard} />
-          <ElementsForm elements={elements} onChange={setElements} />
+        <section className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <BoardForm board={board} onChange={setBoard} />
+            <ElementsForm elements={elements} onChange={setElements} />
+          </div>
           <div className="flex flex-wrap items-center gap-3">
             <Button type="button" onClick={handleOptimize}>
               Optymalizuj
@@ -73,20 +74,18 @@ function App() {
               <AlertTitle>Nieumieszczone elementy</AlertTitle>
               <AlertDescription>
                 <ul className="list-inside list-disc">
-                {result.unplaced.map((item) => (
-                  <li key={item.instanceId}>
-                    Wiersz {item.rowNumber}, element {item.itemNumberInRow}: {item.width} x{' '}
-                    {item.height} mm
-                  </li>
-                ))}
+                  {result.unplaced.map((item) => (
+                    <li key={item.instanceId}>
+                      Wiersz {item.rowNumber}, element {item.itemNumberInRow}: {item.width} x{' '}
+                      {item.height} mm
+                    </li>
+                  ))}
                 </ul>
               </AlertDescription>
             </Alert>
           )}
-          </div>
-          <div>
-            <BoardPreview board={board} result={result} />
-          </div>
+
+          <BoardPreview board={board} result={result} />
         </section>
       </div>
     </main>
