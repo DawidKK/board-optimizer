@@ -206,3 +206,26 @@
     font-size: 130%;
     }
 }
+
+@layer components {
+  [data-slot="card-header"] {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 0.9375rem;
+    background-color: var(--ds-secondary-bg);
+    background-image: radial-gradient(rgb(254 254 254 / 0.5) 0.5px, transparent 0.5px);
+    background-size: 5px 5px;
+  }
+
+  [data-slot="card-title"] {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    height: 2rem;
+    padding: 0 0.625rem;
+    background-color: var(--ds-font-main);
+    color: var(--ds-main-bg);
+    line-height: 1;
+  }
+}
