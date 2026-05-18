@@ -41,10 +41,12 @@ function BoardOptimizerPage() {
           <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
             Optymalizacja rozkroju
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">Board Optimizer</h1>
+          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            Rozkrój płyt meblowych - Board Optimizer
+          </h1>
           <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-            Prosty planer rozkroju dla wielu płyt OSB. Wpisz wymiary, uruchom optymalizację i
-            sprawdź rozmieszczenie oraz odpady.
+            Program do rozkroju płyt meblowych, który pomaga szybko policzyć rozkrój płyt
+            meblowych, sprawdzić rozmieszczenie elementów i zmniejszyć odpady materiału.
           </p>
           <div className="flex items-center gap-2">
             <Badge variant="secondary">Wiele płyt (1..N)</Badge>

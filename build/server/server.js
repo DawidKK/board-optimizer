@@ -1,4 +1,4 @@
-import { d as server_build_exports } from "./assets/server-build-Xhu4omSV.js";
+import { d as server_build_exports } from "./assets/server-build-BP8ZN6m2.js";
 import { createRequestHandler } from "@netlify/vite-plugin-react-router/serverless";
 //#region \0virtual:netlify-server
 var _virtual_netlify_server_default = createRequestHandler({ build: server_build_exports });
