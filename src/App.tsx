@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { BoardForm } from './components/BoardForm'
 import { BoardPreview } from './components/BoardPreview'
+import { CncSettingsForm } from './components/CncSettingsForm'
 import { ElementsForm } from './components/ElementsForm'
 import { packBoard } from './optimizer/packBoard'
-import type { Board, ElementInput, PackResult } from './optimizer/types'
+import type { Board, CncCutSettings, ElementInput, PackResult } from './optimizer/types'
 
 const initialBoard: Board = {
   width: 2500,
@@ -21,8 +22,15 @@ const initialElements: ElementInput[] = [
   { id: 'row-3', width: 450, height: 250, quantity: 3 },
 ]
 
+const initialCncSettings: CncCutSettings = {
+  toolDiameter: 6,
+  safetySpacing: 1,
+  boardMargin: 10,
+}
+
 function BoardOptimizerPage() {
   const [board, setBoard] = useState<Board>(initialBoard)
+  const [cncSettings, setCncSettings] = useState<CncCutSettings>(initialCncSettings)
   const [elements, setElements] = useState<ElementInput[]>(initialElements)
   const [result, setResult] = useState<PackResult | null>(null)
   const totalItems = useMemo(
@@ -31,7 +39,7 @@ function BoardOptimizerPage() {
   )
 
   const handleOptimize = () => {
-    setResult(packBoard(board, elements))
+    setResult(packBoard(board, elements, cncSettings))
   }
 
   return (
@@ -61,6 +69,7 @@ function BoardOptimizerPage() {
             <BoardForm board={board} onChange={setBoard} />
             <ElementsForm elements={elements} onChange={setElements} />
           </div>
+          <CncSettingsForm settings={cncSettings} onChange={setCncSettings} />
           <div className="flex flex-wrap items-center gap-3">
             <Button type="button" onClick={handleOptimize}>
               Optymalizuj

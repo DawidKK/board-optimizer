@@ -3,6 +3,16 @@ export type Board = {
   height: number
 }
 
+export type CncCutSettings = {
+  toolDiameter: number
+  safetySpacing: number
+  boardMargin: number
+}
+
+export type ResolvedCncCutSettings = CncCutSettings & {
+  spacing: number
+}
+
 export type ElementInput = {
   id: string
   width: number
@@ -36,6 +46,9 @@ export type BoardLayout = {
   boardIndex: number
   placed: PlacedElement[]
   boardArea: number
+  usableArea: number
+  nominalUsedArea: number
+  technicalUsedArea: number
   usedArea: number
   wasteArea: number
   wastePercentage: number
@@ -53,11 +66,17 @@ export type QualityMetrics = {
 }
 
 export type PackResult = {
+  settings: ResolvedCncCutSettings
+  usableWidth: number
+  usableHeight: number
   boards: BoardLayout[]
   boardCount: number
   placed: PlacedElement[]
   unplaced: ExpandedElement[]
   boardArea: number
+  usableArea: number
+  nominalUsedArea: number
+  technicalUsedArea: number
   usedArea: number
   wasteArea: number
   wastePercentage: number

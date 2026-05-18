@@ -112,11 +112,11 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                 </svg>
                 <div className="mt-2 grid grid-cols-1 gap-2 text-sm md:grid-cols-3">
                   <div className="rounded-md border border-border p-2">
-                    <p className="text-muted-foreground">Wykorzystana powierzchnia</p>
+                    <p className="text-muted-foreground">Wykorzystana powierzchnia (CNC)</p>
                     <p className="font-medium">{Math.round(boardLayout.usedArea)} mm²</p>
                   </div>
                   <div className="rounded-md border border-border p-2">
-                    <p className="text-muted-foreground">Odpad</p>
+                    <p className="text-muted-foreground">Odpad (obszar roboczy)</p>
                     <p className="font-medium">{Math.round(boardLayout.wasteArea)} mm²</p>
                   </div>
                   <div className="rounded-md border border-border p-2">
@@ -132,13 +132,22 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
         {result && (
           <>
             <Separator />
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <span>Kerf: {result.settings.toolDiameter} mm</span>
+              <span>Odstęp: {result.settings.spacing} mm</span>
+              <span>Margines: {result.settings.boardMargin} mm</span>
+              <span>
+                Obszar roboczy: {Math.max(0, Math.round(result.usableWidth))} x{' '}
+                {Math.max(0, Math.round(result.usableHeight))} mm
+              </span>
+            </div>
             <div className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
               <div className="rounded-md border border-border p-3">
-                <p className="text-muted-foreground">Wykorzystana powierzchnia</p>
+                <p className="text-muted-foreground">Wykorzystana powierzchnia (CNC)</p>
                 <p className="font-medium">{Math.round(result.usedArea)} mm²</p>
               </div>
               <div className="rounded-md border border-border p-3">
-                <p className="text-muted-foreground">Odpad</p>
+                <p className="text-muted-foreground">Odpad (obszar roboczy)</p>
                 <p className="font-medium">
                   {Math.round(result.wasteArea)} mm² ({result.wastePercentage.toFixed(1)}%)
                 </p>
@@ -148,6 +157,10 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                 <p className="font-medium">{result.boardCount}</p>
               </div>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Nominalna powierzchnia elementów (bez kerf/odstępów):{' '}
+              {Math.round(result.nominalUsedArea)} mm²
+            </p>
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="secondary">Umieszczone: {result.placed.length}</Badge>
               <Badge variant={result.unplaced.length > 0 ? 'destructive' : 'outline'}>

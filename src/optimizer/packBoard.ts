@@ -1,7 +1,14 @@
 import { MaxRectsPacker, PACKING_LOGIC } from 'maxrects-packer'
+import {
+  getUsableBoard,
+  inflateSizeForKerf,
+  resolveCncCutSettings,
+  toBoardCoordinates,
+} from './cnc'
 import type {
   Board,
   BoardLayout,
+  CncCutSettings,
   ElementInput,
   ExpandedElement,
   PackResult,
@@ -73,7 +80,67 @@ const emptyQualityMetrics: QualityMetrics = {
   largestFreeRectArea: 0,
 }
 
+const hasSpacingConflict = (
+  first: PlacedElement,
+  second: PlacedElement,
+  spacing: number,
+): boolean => {
+  const horizontalGap = Math.max(
+    second.x - (first.x + first.width),
+    first.x - (second.x + second.width),
+    0,
+  )
+  const verticalGap = Math.max(
+    second.y - (first.y + first.height),
+    first.y - (second.y + second.height),
+    0,
+  )
+  const overlapsY = first.y < second.y + second.height && second.y < first.y + first.height
+  const overlapsX = first.x < second.x + second.width && second.x < first.x + first.width
+  const insufficientHorizontalSpacing = overlapsY && horizontalGap < spacing
+  const insufficientVerticalSpacing = overlapsX && verticalGap < spacing
+  return insufficientHorizontalSpacing || insufficientVerticalSpacing
+}
+
+const validatePlacedLayout = (
+  placed: PlacedElement[],
+  board: Board,
+  boardMargin: number,
+  spacing: number,
+): Set<string> => {
+  const invalidIds = new Set<string>()
+
+  for (const item of placed) {
+    const insideBoard =
+      item.x >= boardMargin &&
+      item.y >= boardMargin &&
+      item.x + item.width <= board.width - boardMargin &&
+      item.y + item.height <= board.height - boardMargin
+
+    if (!insideBoard) {
+      invalidIds.add(item.instanceId)
+    }
+  }
+
+  for (let i = 0; i < placed.length; i += 1) {
+    for (let j = i + 1; j < placed.length; j += 1) {
+      if (hasSpacingConflict(placed[i], placed[j], spacing)) {
+        invalidIds.add(placed[i].instanceId)
+        invalidIds.add(placed[j].instanceId)
+      }
+    }
+  }
+
+  return invalidIds
+}
+
 const buildResultFromPacker = (
+  settings: ReturnType<typeof resolveCncCutSettings>,
+  board: Board,
+  usableWidth: number,
+  usableHeight: number,
+  boardMargin: number,
+  spacing: number,
   singleBoardArea: number,
   expanded: ExpandedElement[],
   packer: MaxRectsPacker,
@@ -83,7 +150,7 @@ const buildResultFromPacker = (
 
   const boards: BoardLayout[] = packer.bins
     .map((bin, boardIndex) => {
-      const placed = bin.rects
+      const placedWithValidation = bin.rects
         .map((rect) => {
           if (rect.oversized) {
             return null
@@ -97,6 +164,10 @@ const buildResultFromPacker = (
 
           packedSet.add(item.instanceId)
 
+          const nominalWidth = rect.rot ? item.height : item.width
+          const nominalHeight = rect.rot ? item.width : item.height
+          const position = toBoardCoordinates(rect.x, rect.y, boardMargin)
+
           return {
             instanceId: item.instanceId,
             sourceId: item.sourceId,
@@ -104,13 +175,24 @@ const buildResultFromPacker = (
             itemNumberInRow: item.itemNumberInRow,
             boardIndex,
             rotated: Boolean(rect.rot),
-            x: rect.x,
-            y: rect.y,
-            width: rect.width,
-            height: rect.height,
+            x: position.x,
+            y: position.y,
+            width: nominalWidth,
+            height: nominalHeight,
           }
         })
         .filter((item): item is PlacedElement => item !== null)
+
+      const invalidPlacedIds = validatePlacedLayout(
+        placedWithValidation,
+        board,
+        boardMargin,
+        spacing,
+      )
+      const placed = placedWithValidation.filter((item) => !invalidPlacedIds.has(item.instanceId))
+      for (const instanceId of invalidPlacedIds) {
+        packedSet.delete(instanceId)
+      }
 
       const freeRectAreas = bin.freeRects.map((rect) => rect.width * rect.height)
       const largestFreeRectArea = freeRectAreas.length > 0 ? Math.max(...freeRectAreas) : 0
@@ -119,15 +201,24 @@ const buildResultFromPacker = (
         0,
       )
       const freeRectCount = bin.freeRects.length
-      const usedArea = placed.reduce((sum, item) => sum + item.width * item.height, 0)
+      const nominalUsedArea = placed.reduce((sum, item) => sum + item.width * item.height, 0)
       const boardArea = singleBoardArea
-      const wasteArea = Math.max(0, boardArea - usedArea)
-      const wastePercentage = boardArea > 0 ? (wasteArea / boardArea) * 100 : 0
+      const usableArea = Math.max(0, usableWidth * usableHeight)
+      const technicalUsedArea = placed.reduce(
+        (sum, item) => sum + (item.width + spacing) * (item.height + spacing),
+        0,
+      )
+      const usedArea = technicalUsedArea
+      const wasteArea = Math.max(0, usableArea - technicalUsedArea)
+      const wastePercentage = usableArea > 0 ? (wasteArea / usableArea) * 100 : 0
 
       return {
         boardIndex,
         placed,
         boardArea,
+        usableArea,
+        nominalUsedArea,
+        technicalUsedArea,
         usedArea,
         wasteArea,
         wastePercentage,
@@ -142,9 +233,15 @@ const buildResultFromPacker = (
   const unplaced = expanded.filter((item) => !packedSet.has(item.instanceId))
   const boardCount = boards.length
   const boardArea = boardCount * singleBoardArea
-  const usedArea = placed.reduce((sum, item) => sum + item.width * item.height, 0)
-  const wasteArea = Math.max(0, boardArea - usedArea)
-  const wastePercentage = boardArea > 0 ? (wasteArea / boardArea) * 100 : 0
+  const usableArea = boardCount * Math.max(0, usableWidth * usableHeight)
+  const nominalUsedArea = placed.reduce((sum, item) => sum + item.width * item.height, 0)
+  const technicalUsedArea = placed.reduce(
+    (sum, item) => sum + (item.width + spacing) * (item.height + spacing),
+    0,
+  )
+  const usedArea = technicalUsedArea
+  const wasteArea = Math.max(0, usableArea - technicalUsedArea)
+  const wastePercentage = usableArea > 0 ? (wasteArea / usableArea) * 100 : 0
 
   const totalSmallRectsArea = boards.reduce((sum, boardLayout) => sum + boardLayout.smallRectsArea, 0)
   const totalFreeRectCount = boards.reduce((sum, boardLayout) => sum + boardLayout.freeRectCount, 0)
@@ -168,11 +265,17 @@ const buildResultFromPacker = (
   }
 
   return {
+    settings,
+    usableWidth,
+    usableHeight,
     boards,
     boardCount,
     placed,
     unplaced,
     boardArea,
+    usableArea,
+    nominalUsedArea,
+    technicalUsedArea,
     usedArea,
     wasteArea,
     wastePercentage,
@@ -180,18 +283,35 @@ const buildResultFromPacker = (
   }
 }
 
-export const packBoard = (board: Board, elements: ElementInput[]): PackResult => {
+export const packBoard = (
+  board: Board,
+  elements: ElementInput[],
+  cncSettings?: Partial<CncCutSettings>,
+): PackResult => {
+  const settings = resolveCncCutSettings(cncSettings)
+  const { usableWidth, usableHeight } = getUsableBoard(board, settings)
   const singleBoardArea = Math.max(0, board.width * board.height)
 
-  if (!isPositive(board.width) || !isPositive(board.height)) {
+  if (
+    !isPositive(board.width) ||
+    !isPositive(board.height) ||
+    !isPositive(usableWidth) ||
+    !isPositive(usableHeight)
+  ) {
     return {
+      settings,
+      usableWidth,
+      usableHeight,
       boards: [],
       boardCount: 0,
       placed: [],
       unplaced: [],
       boardArea: singleBoardArea,
+      usableArea: Math.max(0, usableWidth * usableHeight),
+      nominalUsedArea: 0,
+      technicalUsedArea: 0,
       usedArea: 0,
-      wasteArea: singleBoardArea,
+      wasteArea: Math.max(0, usableWidth * usableHeight),
       wastePercentage: 100,
       qualityMetrics: emptyQualityMetrics,
     }
@@ -203,11 +323,17 @@ export const packBoard = (board: Board, elements: ElementInput[]): PackResult =>
 
   if (expanded.length === 0) {
     return {
+      settings,
+      usableWidth,
+      usableHeight,
       boards: [],
       boardCount: 0,
       placed: [],
       unplaced: [],
       boardArea: 0,
+      usableArea: 0,
+      nominalUsedArea: 0,
+      technicalUsedArea: 0,
       usedArea: 0,
       wasteArea: 0,
       wastePercentage: 0,
@@ -221,18 +347,31 @@ export const packBoard = (board: Board, elements: ElementInput[]): PackResult =>
 
   for (const sortStrategy of sortStrategies) {
     for (const logic of logicStrategies) {
-      const packer = new MaxRectsPacker(board.width, board.height, 0, {
+      const sorted = sortExpanded(expanded, sortStrategy)
+      const packer = new MaxRectsPacker(usableWidth, usableHeight, 0, {
         smart: false,
         pot: false,
         square: false,
         allowRotation: true,
         logic,
       })
-      const sorted = sortExpanded(expanded, sortStrategy)
       for (const item of sorted) {
-        packer.add(item.width, item.height, item)
+        const inflated = inflateSizeForKerf(item, settings.spacing)
+        packer.add(inflated.width, inflated.height, item)
       }
-      results.push(buildResultFromPacker(singleBoardArea, expanded, packer))
+      results.push(
+        buildResultFromPacker(
+          settings,
+          board,
+          usableWidth,
+          usableHeight,
+          settings.boardMargin,
+          settings.spacing,
+          singleBoardArea,
+          expanded,
+          packer,
+        ),
+      )
     }
   }
 
