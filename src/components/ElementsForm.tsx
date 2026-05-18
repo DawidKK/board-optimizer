@@ -67,7 +67,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
           <CardTitle>Elementy</CardTitle>
           <CardDescription>Prostokąty do wycięcia z płyty.</CardDescription>
         </div>
-        <Button type="button" variant="secondary" onClick={() => setIsDialogOpen(true)}>
+        <Button type="button" onClick={() => setIsDialogOpen(true)}>
           Dodaj element
         </Button>
       </CardHeader>
