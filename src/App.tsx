@@ -16,12 +16,12 @@ const initialBoard: Board = {
 }
 
 const initialElements: ElementInput[] = [
-  { id: crypto.randomUUID(), width: 600, height: 400, quantity: 2 },
-  { id: crypto.randomUUID(), width: 800, height: 300, quantity: 2 },
-  { id: crypto.randomUUID(), width: 450, height: 250, quantity: 3 },
+  { id: 'row-1', width: 600, height: 400, quantity: 2 },
+  { id: 'row-2', width: 800, height: 300, quantity: 2 },
+  { id: 'row-3', width: 450, height: 250, quantity: 3 },
 ]
 
-function App() {
+function BoardOptimizerPage() {
   const [board, setBoard] = useState<Board>(initialBoard)
   const [elements, setElements] = useState<ElementInput[]>(initialElements)
   const [result, setResult] = useState<PackResult | null>(null)
@@ -92,4 +92,4 @@ function App() {
   )
 }
 
-export default App
+export default BoardOptimizerPage

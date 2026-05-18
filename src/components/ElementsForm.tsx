@@ -37,6 +37,10 @@ type ElementsFormProps = {
 
 const parseInputNumber = (value: string) => (value === '' ? Number.NaN : Number(value))
 const displayInputNumber = (value: number) => (Number.isFinite(value) ? value : '')
+const createElementId = () =>
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `row-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
 
 export function ElementsForm({ elements, onChange }: ElementsFormProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -54,7 +58,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
 
   const remove = (id: string) => onChange(elements.filter((item) => item.id !== id))
 
-  const add = () => onChange([...elements, { id: crypto.randomUUID(), ...draft }])
+  const add = () => onChange([...elements, { id: createElementId(), ...draft }])
 
   return (
     <Card>
