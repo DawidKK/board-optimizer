@@ -14,20 +14,36 @@ type Pages = {
   "/": {
     params: {};
   };
+  "/coming-soon": {
+    params: {};
+  };
+  "/rozkroj-plyt-meblowych": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
+    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych";
+  };
+  "routes/index.tsx": {
+    id: "routes/index";
     page: "/";
+  };
+  "routes/coming-soon.tsx": {
+    id: "routes/coming-soon";
+    page: "/coming-soon";
   };
   "routes/home.tsx": {
     id: "routes/home";
-    page: "/";
+    page: "/rozkroj-plyt-meblowych";
   };
 };
 
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
+  "routes/index": typeof import("./app/routes/index.tsx");
+  "routes/coming-soon": typeof import("./app/routes/coming-soon.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
 };

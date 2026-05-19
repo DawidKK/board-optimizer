@@ -43,26 +43,39 @@ function BoardOptimizerPage() {
   }
 
   return (
-    <main className="dark min-h-screen bg-background text-foreground">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 md:px-8">
+    <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, rgba(17,20,24,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,20,24,0.07) 1px, transparent 1px)',
+          backgroundSize: '56px 56px',
+        }}
+      />
+      <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 bg-linear-to-br from-primary/20 to-transparent blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-[-5.5rem] h-80 w-80 bg-linear-to-br from-[#7f8b99]/20 to-transparent blur-3xl" />
+
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 md:px-8">
         <header className="space-y-3">
-          <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <p className="text-xs font-medium tracking-wide text-[#5b646d] uppercase">
             Optymalizacja rozkroju
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-[#111418] md:text-4xl">
             Rozkrój płyt meblowych - Board Optimizer
           </h1>
-          <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
+          <p className="max-w-2xl text-sm text-[#3f474f] md:text-base">
             Program do rozkroju płyt meblowych, który pomaga szybko policzyć rozkrój płyt
             meblowych, sprawdzić rozmieszczenie elementów i zmniejszyć odpady materiału.
           </p>
           <div className="flex items-center gap-2">
-            <Badge variant="secondary">Wiele płyt (1..N)</Badge>
-            <Badge variant="outline">Obrót 90° włączony</Badge>
+            <Badge className="bg-[#ff7a1a] text-white">Wiele płyt (1..N)</Badge>
+            <Badge variant="outline" className="border-[#d7dde4] bg-white/70 text-[#3f474f]">
+              Obrót 90° włączony
+            </Badge>
           </div>
         </header>
 
-        <Separator />
+        <Separator className="bg-[#dbe1e7]" />
 
         <section className="flex flex-col gap-6">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
@@ -71,10 +84,14 @@ function BoardOptimizerPage() {
           </div>
           <CncSettingsForm settings={cncSettings} onChange={setCncSettings} />
           <div className="flex flex-wrap items-center gap-3">
-            <Button type="button" onClick={handleOptimize}>
+            <Button
+              type="button"
+              onClick={handleOptimize}
+              className="border border-[#ff7a1a] bg-[#ff7a1a] text-white hover:bg-[#ea6f17]"
+            >
               Optymalizuj
             </Button>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-[#5b646d]">
               Łączna liczba elementów: {totalItems}
             </span>
           </div>

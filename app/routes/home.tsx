@@ -5,7 +5,7 @@ const pageTitle =
   'Rozkrój płyt meblowych - program do rozkroju płyt meblowych | Board Optimizer'
 const pageDescription =
   'Program do rozkroju płyt meblowych online. Wylicz rozkrój płyt meblowych, zobacz układ elementów na płycie i ogranicz odpady materiału.'
-const canonicalUrl = 'https://board-optimizer.netlify.app/'
+const canonicalUrl = 'https://board-optimizer.netlify.app/rozkroj-plyt-meblowych'
 
 export const meta: MetaFunction = () => [
   { title: pageTitle },
