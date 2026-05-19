@@ -47,19 +47,24 @@ export function ComingSoonPage() {
             WKRÓTCE
           </Badge>
 
-          <h1 className="max-w-xl text-5xl leading-tight font-semibold tracking-tight text-[#111418] sm:text-6xl">
-            Przyszłość produkcji mebli.
+          <h1 className="max-w-3xl text-5xl leading-tight font-semibold tracking-tight text-[#111418] sm:text-6xl">
+            Od projektu kuchni do gotowych elementów CNC.
           </h1>
 
           <p className="max-w-2xl text-lg leading-relaxed text-[#3f474f]">
-            Budujemy platformę, która automatycznie generuje elementy meblowe,
-            nesting CNC, listy materiałów i komponenty gotowe do produkcji na
-            podstawie projektu kuchni.
+            Jedna platforma do automatycznego generowania:
           </p>
 
+          <ul className="max-w-2xl list-disc space-y-1 pl-5 text-base leading-relaxed text-[#5b646d] marker:text-primary">
+            <li>elementów meblowych,</li>
+            <li>nestingu CNC,</li>
+            <li>list materiałów,</li>
+            <li>komponentów gotowych do produkcji.</li>
+          </ul>
+
           <p className="max-w-2xl text-base leading-relaxed text-[#5b646d]">
-            Od projektu do gotowych elementów CNC - bez ręcznego liczenia i
-            chaosu w produkcji.
+            Tworzymy nowoczesne narzędzia dla stolarni, które usprawniają
+            produkcję bez skomplikowanego workflow.
           </p>
 
           <p className="max-w-2xl text-sm leading-relaxed text-[#4e5760]">
@@ -83,10 +88,7 @@ export function ComingSoonPage() {
           </div>
         </div>
 
-        <div
-          className="self-start border border-[#dbe1e7] bg-white/75 p-5 shadow-[0_20px_60px_rgba(17,20,24,0.12)] backdrop-blur-sm"
-          style={{ clipPath: "inset(0 round 28px)" }}
-        >
+        <div className="self-start border border-[#dbe1e7] bg-white/75 p-5 shadow-[0_30px_85px_rgba(17,20,24,0.2)] backdrop-blur-sm">
           <CabinetPreview />
         </div>
       </section>

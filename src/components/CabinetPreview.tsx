@@ -176,7 +176,6 @@ function CabinetPreviewComponent() {
     <div className="space-y-4">
       <div
         className="h-[360px] w-full overflow-hidden border border-[#dbe1e7] bg-[#f5f7fa]"
-        style={{ clipPath: "inset(0 round 20px)" }}
       >
         <Canvas camera={{ position: [2.8, 2, 3], fov: 42 }}>
           <CabinetScene activeKey={activePart.key} />
