@@ -2,9 +2,9 @@ import type { MetaFunction } from 'react-router'
 import BoardOptimizerPage from '../../src/App'
 
 const pageTitle =
-  'Rozkrój płyt meblowych - program do rozkroju płyt meblowych | Board Optimizer'
+  'Rozkrój płyt meblowych online - optymalizacja cięcia płyt | PILSEN'
 const pageDescription =
-  'Program do rozkroju płyt meblowych online. Wylicz rozkrój płyt meblowych, zobacz układ elementów na płycie i ogranicz odpady materiału.'
+  'Program do rozkroju płyt meblowych online. Planuj optymalizację cięcia, ograniczaj odpady i przygotuj produkcję mebli pod CNC.'
 const canonicalUrl = 'https://board-optimizer.netlify.app/rozkroj-plyt-meblowych'
 
 export const meta: MetaFunction = () => [

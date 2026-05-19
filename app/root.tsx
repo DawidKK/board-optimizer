@@ -30,7 +30,9 @@ function AppNavbar() {
             to="/"
             className={({ isActive }) =>
               `text-sm font-medium underline underline-offset-4 transition-colors ${
-                isActive ? 'text-primary decoration-primary' : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
+                isActive
+                  ? 'text-primary decoration-primary'
+                  : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
               }`
             }
           >
@@ -40,11 +42,25 @@ function AppNavbar() {
             to="/rozkroj-plyt-meblowych"
             className={({ isActive }) =>
               `text-sm font-medium underline underline-offset-4 transition-colors ${
-                isActive ? 'text-primary decoration-primary' : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
+                isActive
+                  ? 'text-primary decoration-primary'
+                  : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
               }`
             }
           >
             Rozkrój Płyt Meblowych
+          </NavLink>
+          <NavLink
+            to="/blog"
+            className={({ isActive }) =>
+              `text-sm font-medium underline underline-offset-4 transition-colors ${
+                isActive
+                  ? 'text-primary decoration-primary'
+                  : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
+              }`
+            }
+          >
+            Blog
           </NavLink>
         </nav>
       </div>

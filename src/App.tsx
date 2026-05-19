@@ -1,46 +1,57 @@
-import { useMemo, useState } from 'react'
-import { TriangleAlert } from 'lucide-react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { BoardForm } from './components/BoardForm'
-import { BoardPreview } from './components/BoardPreview'
-import { CncSettingsForm } from './components/CncSettingsForm'
-import { ElementsForm } from './components/ElementsForm'
-import { packBoard } from './optimizer/packBoard'
-import type { Board, CncCutSettings, ElementInput, PackResult } from './optimizer/types'
+import { useMemo, useState } from "react";
+import { Link } from "react-router";
+import { TriangleAlert } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { BoardForm } from "./components/BoardForm";
+import { BoardPreview } from "./components/BoardPreview";
+import { CncSettingsForm } from "./components/CncSettingsForm";
+import { ElementsForm } from "./components/ElementsForm";
+import { packBoard } from "./optimizer/packBoard";
+import type {
+  Board,
+  CncCutSettings,
+  ElementInput,
+  PackResult,
+} from "./optimizer/types";
 
 const initialBoard: Board = {
   width: 2500,
   height: 1250,
-}
+};
 
 const initialElements: ElementInput[] = [
-  { id: 'row-1', width: 600, height: 400, quantity: 2 },
-  { id: 'row-2', width: 800, height: 300, quantity: 2 },
-  { id: 'row-3', width: 450, height: 250, quantity: 3 },
-]
+  { id: "row-1", width: 600, height: 400, quantity: 2 },
+  { id: "row-2", width: 800, height: 300, quantity: 2 },
+  { id: "row-3", width: 450, height: 250, quantity: 3 },
+];
 
 const initialCncSettings: CncCutSettings = {
   toolDiameter: 6,
   safetySpacing: 1,
   boardMargin: 10,
-}
+};
 
 function BoardOptimizerPage() {
-  const [board, setBoard] = useState<Board>(initialBoard)
-  const [cncSettings, setCncSettings] = useState<CncCutSettings>(initialCncSettings)
-  const [elements, setElements] = useState<ElementInput[]>(initialElements)
-  const [result, setResult] = useState<PackResult | null>(null)
+  const [board, setBoard] = useState<Board>(initialBoard);
+  const [cncSettings, setCncSettings] =
+    useState<CncCutSettings>(initialCncSettings);
+  const [elements, setElements] = useState<ElementInput[]>(initialElements);
+  const [result, setResult] = useState<PackResult | null>(null);
   const totalItems = useMemo(
-    () => elements.reduce((sum, item) => sum + Math.max(0, Math.floor(item.quantity || 0)), 0),
+    () =>
+      elements.reduce(
+        (sum, item) => sum + Math.max(0, Math.floor(item.quantity || 0)),
+        0,
+      ),
     [elements],
-  )
+  );
 
   const handleOptimize = () => {
-    setResult(packBoard(board, elements, cncSettings))
-  }
+    setResult(packBoard(board, elements, cncSettings));
+  };
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
@@ -48,8 +59,8 @@ function BoardOptimizerPage() {
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            'linear-gradient(to right, rgba(17,20,24,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,20,24,0.07) 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
+            "linear-gradient(to right, rgba(17,20,24,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,20,24,0.07) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
         }}
       />
       <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 bg-linear-to-br from-primary/20 to-transparent blur-3xl" />
@@ -64,12 +75,26 @@ function BoardOptimizerPage() {
             Rozkrój płyt meblowych - Board Optimizer
           </h1>
           <p className="max-w-2xl text-sm text-[#3f474f] md:text-base">
-            Program do rozkroju płyt meblowych, który pomaga szybko policzyć rozkrój płyt
-            meblowych, sprawdzić rozmieszczenie elementów i zmniejszyć odpady materiału.
+            Program do rozkroju płyt meblowych, który pomaga szybko policzyć
+            rozkrój płyt meblowych, sprawdzić rozmieszczenie elementów i
+            zmniejszyć odpady materiału.
+          </p>
+          <p className="max-w-2xl text-sm text-[#4e5760] md:text-base">
+            Szukasz praktycznych wskazówek? Przeczytaj{" "}
+            <Link
+              to="/blog"
+              className="font-semibold text-[#ff7a1a] underline underline-offset-4"
+            >
+              poradniki o optymalizacji cięcia i produkcji mebli
+            </Link>
+            .
           </p>
           <div className="flex items-center gap-2">
             <Badge className="bg-[#ff7a1a] text-white">Wiele płyt (1..N)</Badge>
-            <Badge variant="outline" className="border-[#d7dde4] bg-white/70 text-[#3f474f]">
+            <Badge
+              variant="outline"
+              className="border-[#d7dde4] bg-white/70 text-[#3f474f]"
+            >
               Obrót 90° włączony
             </Badge>
           </div>
@@ -104,8 +129,8 @@ function BoardOptimizerPage() {
                 <ul className="list-inside list-disc">
                   {result.unplaced.map((item) => (
                     <li key={item.instanceId}>
-                      Wiersz {item.rowNumber}, element {item.itemNumberInRow}: {item.width} x{' '}
-                      {item.height} mm
+                      Wiersz {item.rowNumber}, element {item.itemNumberInRow}:{" "}
+                      {item.width} x {item.height} mm
                     </li>
                   ))}
                 </ul>
@@ -117,7 +142,7 @@ function BoardOptimizerPage() {
         </section>
       </div>
     </main>
-  )
+  );
 }
 
-export default BoardOptimizerPage
+export default BoardOptimizerPage;

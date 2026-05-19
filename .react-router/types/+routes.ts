@@ -20,12 +20,20 @@ type Pages = {
   "/rozkroj-plyt-meblowych": {
     params: {};
   };
+  "/blog": {
+    params: {};
+  };
+  "/blog/:slug": {
+    params: {
+      "slug": string;
+    };
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych";
+    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych" | "/blog" | "/blog/:slug";
   };
   "routes/index.tsx": {
     id: "routes/index";
@@ -39,6 +47,14 @@ type RouteFiles = {
     id: "routes/home";
     page: "/rozkroj-plyt-meblowych";
   };
+  "routes/blog.tsx": {
+    id: "routes/blog";
+    page: "/blog";
+  };
+  "routes/blog-post.tsx": {
+    id: "routes/blog-post";
+    page: "/blog/:slug";
+  };
 };
 
 type RouteModules = {
@@ -46,4 +62,6 @@ type RouteModules = {
   "routes/index": typeof import("./app/routes/index.tsx");
   "routes/coming-soon": typeof import("./app/routes/coming-soon.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
+  "routes/blog": typeof import("./app/routes/blog.tsx");
+  "routes/blog-post": typeof import("./app/routes/blog-post.tsx");
 };
