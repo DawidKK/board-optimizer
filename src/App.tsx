@@ -21,12 +21,14 @@ const PRINT_STORAGE_KEY = "board-optimizer-print-payload";
 const initialBoard: Board = {
   width: 2500,
   height: 1250,
+  grainDirectionEnabled: false,
+  grainAxis: "y",
 };
 
 const initialElements: ElementInput[] = [
-  { id: "row-1", width: 600, height: 400, quantity: 2 },
-  { id: "row-2", width: 800, height: 300, quantity: 2 },
-  { id: "row-3", width: 450, height: 250, quantity: 3 },
+  { id: "row-1", width: 600, height: 400, quantity: 2, canRotate: true },
+  { id: "row-2", width: 800, height: 300, quantity: 2, canRotate: true },
+  { id: "row-3", width: 450, height: 250, quantity: 3, canRotate: true },
 ];
 
 const initialCncSettings: CncCutSettings = {
@@ -41,6 +43,14 @@ function BoardOptimizerPage() {
     useState<CncCutSettings>(initialCncSettings);
   const [elements, setElements] = useState<ElementInput[]>(initialElements);
   const [result, setResult] = useState<PackResult | null>(null);
+
+  const handleBoardChange = (next: Board) => {
+    if (next.grainDirectionEnabled && !board.grainDirectionEnabled) {
+      setElements((current) => current.map((item) => ({ ...item, canRotate: false })));
+    }
+    setBoard(next);
+  };
+
   const handleOptimize = () => {
     setResult(packBoard(board, elements, cncSettings));
   };
@@ -83,8 +93,19 @@ function BoardOptimizerPage() {
 
         <section className="flex flex-col gap-6">
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-            <BoardForm board={board} onChange={setBoard} />
-            <ElementsForm elements={elements} onChange={setElements} />
+            <BoardForm board={board} onChange={handleBoardChange} />
+            <ElementsForm
+              elements={elements}
+              onChange={setElements}
+              grainDirectionEnabled={board.grainDirectionEnabled}
+              grainAxis={board.grainAxis}
+              onGrainAxisChange={(axis) =>
+                handleBoardChange({ ...board, grainAxis: axis })
+              }
+              onGrainDirectionEnabledChange={(enabled) =>
+                handleBoardChange({ ...board, grainDirectionEnabled: enabled })
+              }
+            />
           </div>
           <CncSettingsForm settings={cncSettings} onChange={setCncSettings} />
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -117,6 +138,10 @@ function BoardOptimizerPage() {
                     <li key={item.instanceId}>
                       Wiersz {item.rowNumber}, element {item.itemNumberInRow}:{" "}
                       {item.width} x {item.height} mm
+                      {board.grainDirectionEnabled &&
+                        result.grainBlockedUnplacedIds.includes(item.instanceId) && (
+                        <>. Element nie mieści się na płycie przy zachowaniu kierunku usłojenia ({board.grainAxis === "x" ? "wzdłuż szerokości" : "wzdłuż wysokości"}).</>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -125,7 +150,7 @@ function BoardOptimizerPage() {
           )}
 
           <BoardPreview board={board} result={result} />
-          {result && <SummaryCard result={result} />}
+          {result && <SummaryCard board={board} result={result} />}
         </section>
       </div>
     </main>

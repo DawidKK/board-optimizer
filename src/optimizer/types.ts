@@ -1,6 +1,8 @@
 export type Board = {
   width: number
   height: number
+  grainDirectionEnabled: boolean
+  grainAxis: 'x' | 'y'
 }
 
 export type CncCutSettings = {
@@ -18,6 +20,7 @@ export type ElementInput = {
   width: number
   height: number
   quantity: number
+  canRotate?: boolean
 }
 
 export type ExpandedElement = {
@@ -27,6 +30,7 @@ export type ExpandedElement = {
   itemNumberInRow: number
   width: number
   height: number
+  canRotate: boolean
 }
 
 export type PlacedElement = {
@@ -81,4 +85,5 @@ export type PackResult = {
   wasteArea: number
   wastePercentage: number
   qualityMetrics: QualityMetrics
+  grainBlockedUnplacedIds: string[]
 }

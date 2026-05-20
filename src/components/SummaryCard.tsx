@@ -7,14 +7,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { PackResult } from "@/optimizer/types";
+import type { Board, PackResult } from "@/optimizer/types";
 
 type SummaryCardProps = {
+  board: Board;
   result: PackResult;
 };
 
-export function SummaryCard({ result }: SummaryCardProps) {
+export function SummaryCard({ board, result }: SummaryCardProps) {
   const totalElements = result.placed.length + result.unplaced.length;
+  const grainDirectionLabel = !board.grainDirectionEnabled
+    ? "Wyłączony"
+    : board.grainAxis === "x"
+      ? "Wzdłuż szerokości"
+      : "Wzdłuż wysokości";
 
   return (
     <Card className="border border-[#dbe1e7] bg-white/85 shadow-[0_15px_42px_rgba(17,20,24,0.1)]">
@@ -62,6 +68,10 @@ export function SummaryCard({ result }: SummaryCardProps) {
             <TableRow className="border-[#e6ebf0] hover:bg-[#f1f4f7]">
               <TableCell>Liczba płyt</TableCell>
               <TableCell>{result.boardCount}</TableCell>
+            </TableRow>
+            <TableRow className="border-[#e6ebf0] hover:bg-[#f1f4f7]">
+              <TableCell>Kierunek usłojenia</TableCell>
+              <TableCell>{grainDirectionLabel}</TableCell>
             </TableRow>
             <TableRow className="border-[#e6ebf0] hover:bg-[#f1f4f7]">
               <TableCell>Liczba elementów</TableCell>

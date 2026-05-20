@@ -28,11 +28,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getRowColor } from "@/optimizer/rowColors";
-import type { ElementInput } from "../optimizer/types";
+import type { Board, ElementInput } from "../optimizer/types";
 
 type ElementsFormProps = {
   elements: ElementInput[];
   onChange: (next: ElementInput[]) => void;
+  grainDirectionEnabled: boolean;
+  grainAxis: Board["grainAxis"];
+  onGrainAxisChange: (axis: Board["grainAxis"]) => void;
+  onGrainDirectionEnabledChange: (enabled: boolean) => void;
 };
 
 const parseInputNumber = (value: string) =>
@@ -44,7 +48,14 @@ const createElementId = () =>
     ? crypto.randomUUID()
     : `row-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-export function ElementsForm({ elements, onChange }: ElementsFormProps) {
+export function ElementsForm({
+  elements,
+  onChange,
+  grainDirectionEnabled,
+  grainAxis,
+  onGrainAxisChange,
+  onGrainDirectionEnabledChange,
+}: ElementsFormProps) {
   const lightInputClass =
     "border-[#cfd7df] bg-white text-[#111418] placeholder:text-[#6b7682] focus-visible:border-[#111418]/35 focus-visible:ring-[#111418]/10";
 
@@ -53,12 +64,13 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
     width: 300,
     height: 200,
     quantity: 1,
+    canRotate: !grainDirectionEnabled,
   });
 
   const update = (
     id: string,
     key: keyof Omit<ElementInput, "id">,
-    value: number,
+    value: number | boolean,
   ) => {
     onChange(
       elements.map((item) =>
@@ -84,12 +96,62 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
         </Button>
       </CardHeader>
       <CardContent className="space-y-4">
+        <Label className="inline-flex items-center gap-3 text-[#111418]">
+          <Checkbox
+            checked={grainDirectionEnabled}
+            onCheckedChange={(checked) =>
+              onGrainDirectionEnabledChange(checked === true)
+            }
+          />
+          Zachowaj kierunek usłojenia
+        </Label>
+        {grainDirectionEnabled && (
+          <div className="rounded-md border border-[#dbe1e7] bg-[#f8fafc] p-3">
+            <div className="grid gap-3">
+              <div className="grid gap-2">
+                <Label className="text-[#111418]">Kierunek usłojenia</Label>
+                <Select
+                  value={grainAxis}
+                  onValueChange={(value) =>
+                    onGrainAxisChange(value as Board["grainAxis"])
+                  }
+                >
+                  <SelectTrigger className="w-full border-[#cfd7df] bg-white text-[#111418]">
+                    <SelectValue placeholder="Wybierz kierunek usłojenia" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Szerokość (wzdłuż płyty)">
+                      Szerokość (wzdłuż płyty)
+                    </SelectItem>
+                    <SelectItem value="Wysokość (wzdłuż płyty)">
+                      Wysokość (wzdłuż płyty)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        )}
         <Table>
           <TableHeader className="[&_th]:text-[#111418] [&_th]:font-semibold [&_tr:hover]:bg-transparent">
             <TableRow>
               <TableHead>Wiersz</TableHead>
-              <TableHead>Szerokość</TableHead>
-              <TableHead>Wysokość</TableHead>
+              <TableHead>
+                Szerokość{" "}
+                {grainDirectionEnabled
+                  ? grainAxis === "x"
+                    ? "(‖ słoje)"
+                    : "(⊥ słoje)"
+                  : ""}
+              </TableHead>
+              <TableHead>
+                Wysokość{" "}
+                {grainDirectionEnabled
+                  ? grainAxis === "y"
+                    ? "(‖ słoje)"
+                    : "(⊥ słoje)"
+                  : ""}
+              </TableHead>
               <TableHead>Ilość</TableHead>
               <TableHead className="text-right">Akcje</TableHead>
             </TableRow>
@@ -247,8 +309,16 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
               </div>
 
               <Label className="gap-3 text-[#111418]">
-                <Checkbox checked={false} disabled />
-                Obrót wyłączony w MVP
+                <Checkbox
+                  checked={draft.canRotate ?? !grainDirectionEnabled}
+                  onCheckedChange={(checked) =>
+                    setDraft((current) => ({
+                      ...current,
+                      canRotate: checked === true,
+                    }))
+                  }
+                />
+                Można obracać
               </Label>
             </div>
 
@@ -264,6 +334,10 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                 type="button"
                 onClick={() => {
                   add();
+                  setDraft((current) => ({
+                    ...current,
+                    canRotate: !grainDirectionEnabled,
+                  }));
                   setIsDialogOpen(false);
                 }}
               >

@@ -1,4 +1,4 @@
-import { MaxRectsPacker, PACKING_LOGIC } from 'maxrects-packer'
+import { MaxRectsPacker, PACKING_LOGIC, Rectangle } from 'maxrects-packer'
 import {
   getUsableBoard,
   inflateSizeForKerf,
@@ -23,9 +23,13 @@ const SMALL_RECTS_WEIGHT = 2
 const FREE_RECTS_COUNT_WEIGHT = 5_000
 const LARGEST_FREE_RECT_BONUS = 0.6
 
-export const expandElements = (elements: ElementInput[]): ExpandedElement[] =>
+export const expandElements = (
+  board: Board,
+  elements: ElementInput[],
+): ExpandedElement[] =>
   elements.flatMap((element, rowIndex) => {
     const quantity = Math.max(0, Math.floor(element.quantity || 0))
+    const canRotate = element.canRotate ?? !board.grainDirectionEnabled
 
     return Array.from({ length: quantity }, (_, index) => ({
       instanceId: `${element.id}-${index + 1}`,
@@ -34,6 +38,7 @@ export const expandElements = (elements: ElementInput[]): ExpandedElement[] =>
       itemNumberInRow: index + 1,
       width: element.width,
       height: element.height,
+      canRotate,
     }))
   })
 
@@ -146,6 +151,7 @@ const buildResultFromPacker = (
   packer: MaxRectsPacker,
 ): PackResult => {
   const packedSet = new Set<string>()
+  const grainBlockedUnplacedSet = new Set<string>()
   const smallRectThreshold = singleBoardArea * 0.05
 
   const boards: BoardLayout[] = packer.bins
@@ -163,6 +169,12 @@ const buildResultFromPacker = (
           }
 
           packedSet.add(item.instanceId)
+
+          if (rect.rot && !item.canRotate) {
+            packedSet.delete(item.instanceId)
+            grainBlockedUnplacedSet.add(item.instanceId)
+            return null
+          }
 
           const nominalWidth = rect.rot ? item.height : item.width
           const nominalHeight = rect.rot ? item.width : item.height
@@ -280,6 +292,7 @@ const buildResultFromPacker = (
     wasteArea,
     wastePercentage,
     qualityMetrics,
+    grainBlockedUnplacedIds: Array.from(grainBlockedUnplacedSet),
   }
 }
 
@@ -314,10 +327,11 @@ export const packBoard = (
       wasteArea: Math.max(0, usableWidth * usableHeight),
       wastePercentage: 100,
       qualityMetrics: emptyQualityMetrics,
+      grainBlockedUnplacedIds: [],
     }
   }
 
-  const expanded = expandElements(elements).filter(
+  const expanded = expandElements(board, elements).filter(
     (item) => isPositive(item.width) && isPositive(item.height),
   )
 
@@ -338,6 +352,7 @@ export const packBoard = (
       wasteArea: 0,
       wastePercentage: 0,
       qualityMetrics: emptyQualityMetrics,
+      grainBlockedUnplacedIds: [],
     }
   }
 
@@ -357,7 +372,16 @@ export const packBoard = (
       })
       for (const item of sorted) {
         const inflated = inflateSizeForKerf(item, settings.spacing)
-        packer.add(inflated.width, inflated.height, item)
+        const rectangle = new Rectangle(
+          inflated.width,
+          inflated.height,
+          0,
+          0,
+          false,
+          item.canRotate,
+        )
+        rectangle.data = item
+        packer.add(rectangle)
       }
       results.push(
         buildResultFromPacker(
