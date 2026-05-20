@@ -28,6 +28,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getRowColor } from "@/optimizer/rowColors";
+import { GRAIN_AXIS_HEIGHT, GRAIN_AXIS_WIDTH } from "../optimizer/types";
 import type { Board, ElementInput } from "../optimizer/types";
 
 type ElementsFormProps = {
@@ -120,10 +121,10 @@ export function ElementsForm({
                     <SelectValue placeholder="Wybierz kierunek usłojenia" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Szerokość (wzdłuż płyty)">
+                    <SelectItem value={GRAIN_AXIS_WIDTH}>
                       Szerokość (wzdłuż płyty)
                     </SelectItem>
-                    <SelectItem value="Wysokość (wzdłuż płyty)">
+                    <SelectItem value={GRAIN_AXIS_HEIGHT}>
                       Wysokość (wzdłuż płyty)
                     </SelectItem>
                   </SelectContent>
@@ -139,7 +140,7 @@ export function ElementsForm({
               <TableHead>
                 Szerokość{" "}
                 {grainDirectionEnabled
-                  ? grainAxis === "x"
+                  ? grainAxis === GRAIN_AXIS_WIDTH
                     ? "(‖ słoje)"
                     : "(⊥ słoje)"
                   : ""}
@@ -147,7 +148,7 @@ export function ElementsForm({
               <TableHead>
                 Wysokość{" "}
                 {grainDirectionEnabled
-                  ? grainAxis === "y"
+                  ? grainAxis === GRAIN_AXIS_HEIGHT
                     ? "(‖ słoje)"
                     : "(⊥ słoje)"
                   : ""}

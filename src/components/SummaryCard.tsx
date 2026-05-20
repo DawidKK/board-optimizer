@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { GRAIN_AXIS_WIDTH } from "@/optimizer/types";
 import type { Board, PackResult } from "@/optimizer/types";
 
 type SummaryCardProps = {
@@ -18,7 +19,7 @@ export function SummaryCard({ board, result }: SummaryCardProps) {
   const totalElements = result.placed.length + result.unplaced.length;
   const grainDirectionLabel = !board.grainDirectionEnabled
     ? "Wyłączony"
-    : board.grainAxis === "x"
+    : board.grainAxis === GRAIN_AXIS_WIDTH
       ? "Wzdłuż szerokości"
       : "Wzdłuż wysokości";
 

@@ -15,6 +15,7 @@ import type {
   ElementInput,
   PackResult,
 } from "./optimizer/types";
+import { GRAIN_AXIS_HEIGHT, GRAIN_AXIS_WIDTH } from "./optimizer/types";
 
 const PRINT_STORAGE_KEY = "board-optimizer-print-payload";
 
@@ -22,7 +23,7 @@ const initialBoard: Board = {
   width: 2500,
   height: 1250,
   grainDirectionEnabled: false,
-  grainAxis: "y",
+  grainAxis: GRAIN_AXIS_HEIGHT,
 };
 
 const initialElements: ElementInput[] = [
@@ -140,7 +141,7 @@ function BoardOptimizerPage() {
                       {item.width} x {item.height} mm
                       {board.grainDirectionEnabled &&
                         result.grainBlockedUnplacedIds.includes(item.instanceId) && (
-                        <>. Element nie mieści się na płycie przy zachowaniu kierunku usłojenia ({board.grainAxis === "x" ? "wzdłuż szerokości" : "wzdłuż wysokości"}).</>
+                        <>. Element nie mieści się na płycie przy zachowaniu kierunku usłojenia ({board.grainAxis === GRAIN_AXIS_WIDTH ? "wzdłuż szerokości" : "wzdłuż wysokości"}).</>
                       )}
                     </li>
                   ))}

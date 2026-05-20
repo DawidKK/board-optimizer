@@ -1,8 +1,11 @@
+export const GRAIN_AXIS_WIDTH = 'Szerokość (wzdłuż płyty)' as const
+export const GRAIN_AXIS_HEIGHT = 'Wysokość (wzdłuż płyty)' as const
+
 export type Board = {
   width: number
   height: number
   grainDirectionEnabled: boolean
-  grainAxis: 'x' | 'y'
+  grainAxis: typeof GRAIN_AXIS_WIDTH | typeof GRAIN_AXIS_HEIGHT
 }
 
 export type CncCutSettings = {

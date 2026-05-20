@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRowColor } from "@/optimizer/rowColors";
+import { GRAIN_AXIS_WIDTH } from "../optimizer/types";
 import type { Board, PackResult } from "../optimizer/types";
 
 type BoardPreviewProps = {
@@ -11,7 +12,7 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
   const canDraw = board.width > 0 && board.height > 0;
   const viewWidth = Math.max(1, board.width);
   const viewHeight = Math.max(1, board.height);
-  const isAxisX = board.grainAxis === "x";
+  const isAxisX = board.grainAxis === GRAIN_AXIS_WIDTH;
 
   return (
     <Card className="h-full border border-[#dbe1e7] bg-white/85 shadow-[0_15px_42px_rgba(17,20,24,0.1)]">
@@ -59,7 +60,7 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                     </svg>
                     <span className="font-medium text-[#334155]">
                       - Kierunek usłojenia:{" "}
-                      {board.grainAxis === "x" ? "wzdłuż szerokości" : "wzdłuż wysokości"}
+                      {board.grainAxis === GRAIN_AXIS_WIDTH ? "wzdłuż szerokości" : "wzdłuż wysokości"}
                     </span>
                   </div>
                 )}
