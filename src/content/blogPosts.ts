@@ -19,6 +19,60 @@ export type BlogPost = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'podglad-do-druku-monochromatyczny-rozkroj-plyt',
+    title:
+      'Nowość: podgląd do wydruku rozkroju płyt meblowych (wersja monochromatyczna)',
+    excerpt:
+      'Dodaliśmy podgląd do druku w nowej karcie: czarno-biały, z czytelnymi wzorami elementów, gotowy do wydruku i zapisu do PDF.',
+    publishDate: '2026-05-20',
+    metaTitle:
+      'Podgląd do wydruku rozkroju płyt meblowych (monochromatyczny) | Blog PILSEN',
+    metaDescription:
+      'Sprawdź nową funkcję podglądu do wydruku: monochromatyczny układ elementów z wzorami (kreski, kropki, kratki) oraz instrukcja krok po kroku.',
+    lead:
+      'W aplikacji dostępna jest nowa funkcjonalność podglądu do wydruku. Po kliknięciu przycisku Drukuj otwiera się osobna karta, w której znajduje się tylko układ płyt i elementów przygotowany pod druk. Widok jest monochromatyczny, dzięki czemu na drukarkach czarno-białych wszystkie elementy pozostają czytelne. Zamiast rozróżniania kolorem stosowane są wzory, takie jak kreski, kropki i kratki.',
+    sections: [
+      {
+        heading: 'Dlaczego wersja monochromatyczna jest ważna',
+        paragraphs: [
+          'W praktyce produkcyjnej wydruki często trafiają na drukarki czarno-białe. Przy oznaczaniu elementów samym kolorem łatwo o pomyłkę, bo różnice między odcieniami stają się słabo widoczne.',
+          'Tryb monochromatyczny rozwiązuje ten problem: każdy element jest oznaczony wzorem, a nie tylko kolorem. Dzięki temu plan rozkroju jest czytelny również na zwykłym wydruku biurowym.',
+        ],
+      },
+      {
+        heading: 'Jak korzystać z podglądu do wydruku - krok po kroku',
+        paragraphs: [
+          '1. Uzupełnij wymiary płyty oraz listę elementów (szerokość, wysokość i ilość).',
+          '2. Kliknij przycisk Optymalizuj, aby wygenerować aktualny układ rozkroju.',
+          '3. Kliknij przycisk Drukuj w głównym widoku narzędzia.',
+          '4. W nowej karcie otworzy się podgląd przeznaczony wyłącznie do wydruku, bez dodatkowych paneli.',
+          '5. Sprawdź układ: elementy są pokazane monochromatycznie i rozróżnione wzorami (kreski, kropki, kratki).',
+          '6. Kliknij Drukuj / Zapisz do PDF i wybierz drukarkę lub opcję zapisu do pliku PDF.',
+        ],
+      },
+      {
+        heading: 'Co zawiera widok drukowania',
+        paragraphs: [
+          'Podgląd obejmuje samą płytę z rozmieszczeniem elementów, opisy wymiarów i numerację elementów. Całość jest przygotowana pod czytelność na papierze.',
+          'W widoku do druku nie ma nawigacji i zbędnych elementów interfejsu, więc na wydruku trafia tylko to, co jest potrzebne do pracy na produkcji.',
+        ],
+      },
+    ],
+    mistakes: [
+      'Próba drukowania bez wcześniejszego kliknięcia Optymalizuj.',
+      'Zakładanie, że kolory na ekranie będą tak samo czytelne na wydruku czarno-białym.',
+      'Pomijanie krótkiej kontroli wymiarów przed zapisaniem PDF dla produkcji.',
+    ],
+    checklist: [
+      'Sprawdź, czy układ został przeliczony przyciskiem Optymalizuj.',
+      'Otwórz dedykowany podgląd przez przycisk Drukuj.',
+      'Zweryfikuj czytelność wzorów i numeracji elementów.',
+      'Zapisz plan do PDF lub wydrukuj bezpośrednio z widoku drukowania.',
+    ],
+    summary:
+      'Nowy podgląd do wydruku upraszcza przygotowanie dokumentacji na produkcję: otwiera się w osobnej karcie, jest monochromatyczny i czytelny na drukarkach czarno-białych dzięki oznaczeniom wzorami.',
+  },
+  {
     slug: 'jak-poprawnie-uzywac-narzedzia-do-rozkroju-plyt-meblowych',
     title: 'Jak poprawnie używać narzędzia do rozkroju płyt meblowych w aplikacji',
     excerpt:

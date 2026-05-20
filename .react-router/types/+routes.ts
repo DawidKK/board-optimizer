@@ -20,6 +20,9 @@ type Pages = {
   "/rozkroj-plyt-meblowych": {
     params: {};
   };
+  "/rozkroj-plyt-meblowych/druk": {
+    params: {};
+  };
   "/blog": {
     params: {};
   };
@@ -33,7 +36,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych" | "/blog" | "/blog/:slug";
+    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych" | "/rozkroj-plyt-meblowych/druk" | "/blog" | "/blog/:slug";
   };
   "routes/index.tsx": {
     id: "routes/index";
@@ -46,6 +49,10 @@ type RouteFiles = {
   "routes/home.tsx": {
     id: "routes/home";
     page: "/rozkroj-plyt-meblowych";
+  };
+  "routes/print-layout.tsx": {
+    id: "routes/print-layout";
+    page: "/rozkroj-plyt-meblowych/druk";
   };
   "routes/blog.tsx": {
     id: "routes/blog";
@@ -62,6 +69,7 @@ type RouteModules = {
   "routes/index": typeof import("./app/routes/index.tsx");
   "routes/coming-soon": typeof import("./app/routes/coming-soon.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
+  "routes/print-layout": typeof import("./app/routes/print-layout.tsx");
   "routes/blog": typeof import("./app/routes/blog.tsx");
   "routes/blog-post": typeof import("./app/routes/blog-post.tsx");
 };

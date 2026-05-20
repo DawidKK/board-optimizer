@@ -17,6 +17,8 @@ import type {
   PackResult,
 } from "./optimizer/types";
 
+const PRINT_STORAGE_KEY = "board-optimizer-print-payload";
+
 const initialBoard: Board = {
   width: 2500,
   height: 1250,
@@ -51,6 +53,16 @@ function BoardOptimizerPage() {
 
   const handleOptimize = () => {
     setResult(packBoard(board, elements, cncSettings));
+  };
+
+  const handleOpenPrintPreview = () => {
+    if (!result || typeof window === "undefined") return;
+
+    window.localStorage.setItem(
+      PRINT_STORAGE_KEY,
+      JSON.stringify({ board, result }),
+    );
+    window.open("/rozkroj-plyt-meblowych/druk", "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -115,6 +127,14 @@ function BoardOptimizerPage() {
               className="border border-[#ff7a1a] bg-[#ff7a1a] text-white hover:bg-[#ea6f17]"
             >
               Optymalizuj
+            </Button>
+            <Button
+              type="button"
+              onClick={handleOpenPrintPreview}
+              disabled={!result}
+              className="border border-[#ff7a1a] bg-[#ff7a1a] text-white hover:bg-[#ea6f17]"
+            >
+              Drukuj
             </Button>
             <span className="text-sm text-[#5b646d]">
               Łączna liczba elementów: {totalItems}

@@ -7,6 +7,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from 'react-router'
 
 import stylesheet from '../src/index.css?url'
@@ -78,7 +79,6 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
-        <AppNavbar />
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -88,7 +88,19 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function AppRoot() {
-  return <Outlet />
+  const location = useLocation()
+  const isPrintRoute = location.pathname === '/rozkroj-plyt-meblowych/druk'
+
+  if (isPrintRoute) {
+    return <Outlet />
+  }
+
+  return (
+    <>
+      <AppNavbar />
+      <Outlet />
+    </>
+  )
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {
