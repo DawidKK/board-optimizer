@@ -18,7 +18,7 @@ export function links() {
 
 function AppNavbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-white/15 bg-black">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-start gap-6 px-4 py-3 md:px-8">
         <NavLink to="/" className="inline-flex items-center">
           <span className="bg-primary px-3 py-1.5 text-sm font-semibold tracking-[0.18em] text-primary-foreground uppercase">
@@ -33,7 +33,7 @@ function AppNavbar() {
               `text-sm font-medium underline underline-offset-4 transition-colors ${
                 isActive
                   ? 'text-primary decoration-primary'
-                  : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
+                  : 'text-white/85 decoration-white/65 hover:text-white'
               }`
             }
           >
@@ -45,7 +45,7 @@ function AppNavbar() {
               `text-sm font-medium underline underline-offset-4 transition-colors ${
                 isActive
                   ? 'text-primary decoration-primary'
-                  : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
+                  : 'text-white/85 decoration-white/65 hover:text-white'
               }`
             }
           >
@@ -57,7 +57,7 @@ function AppNavbar() {
               `text-sm font-medium underline underline-offset-4 transition-colors ${
                 isActive
                   ? 'text-primary decoration-primary'
-                  : 'text-foreground/85 decoration-foreground/65 hover:text-foreground'
+                  : 'text-white/85 decoration-white/65 hover:text-white'
               }`
             }
           >

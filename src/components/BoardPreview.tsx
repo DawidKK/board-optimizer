@@ -1,6 +1,4 @@
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { getRowColor } from "@/optimizer/rowColors";
 import type { Board, PackResult } from "../optimizer/types";
 
@@ -15,7 +13,7 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
   const viewHeight = Math.max(1, board.height);
 
   return (
-    <Card className="h-full">
+    <Card className="h-full border border-[#dbe1e7] bg-white/85 shadow-[0_15px_42px_rgba(17,20,24,0.1)]">
       <CardHeader>
         <CardTitle>Podgląd</CardTitle>
       </CardHeader>
@@ -29,9 +27,9 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
             {(result?.boards ?? []).map((boardLayout) => (
               <div
                 key={boardLayout.boardIndex}
-                className="rounded-lg border border-border bg-muted/20 p-2"
+                className="rounded-lg border border-border bg-white p-2"
               >
-                <p className="mb-1 text-sm font-medium">
+                <p className="mb-1 text-sm font-medium text-[#111418]">
                   Płyta {boardLayout.boardIndex + 1}
                 </p>
                 <svg
@@ -113,25 +111,25 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                   })}
                 </svg>
                 <div className="mt-2 grid grid-cols-1 gap-2 text-sm md:grid-cols-3">
-                  <div className="rounded-md border border-border p-2">
-                    <p className="text-muted-foreground">
+                  <div className="rounded-md border border-border p-2 text-[#111418]">
+                    <p className="text-[#5f6b77]">
                       Wykorzystana powierzchnia (CNC)
                     </p>
-                    <p className="font-medium">
+                    <p className="font-medium text-[#111418]">
                       {Math.round(boardLayout.usedArea)} mm²
                     </p>
                   </div>
-                  <div className="rounded-md border border-border p-2">
-                    <p className="text-muted-foreground">
+                  <div className="rounded-md border border-border p-2 text-[#111418]">
+                    <p className="text-[#5f6b77]">
                       Odpad (obszar roboczy)
                     </p>
-                    <p className="font-medium">
+                    <p className="font-medium text-[#111418]">
                       {Math.round(boardLayout.wasteArea)} mm²
                     </p>
                   </div>
-                  <div className="rounded-md border border-border p-2">
-                    <p className="text-muted-foreground">Odpad (%)</p>
-                    <p className="font-medium">
+                  <div className="rounded-md border border-border p-2 text-[#111418]">
+                    <p className="text-[#5f6b77]">Odpad (%)</p>
+                    <p className="font-medium text-[#111418]">
                       {boardLayout.wastePercentage.toFixed(1)}%
                     </p>
                   </div>
@@ -141,53 +139,6 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
           </div>
         )}
 
-        {result && (
-          <>
-            <Separator />
-            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-              <span>Kerf: {result.settings.toolDiameter} mm</span>
-              <span>Odstęp: {result.settings.spacing} mm</span>
-              <span>Margines: {result.settings.boardMargin} mm</span>
-              <span>
-                Obszar roboczy: {Math.max(0, Math.round(result.usableWidth))} x{" "}
-                {Math.max(0, Math.round(result.usableHeight))} mm
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
-              <div className="rounded-md border border-border p-3">
-                <p className="text-muted-foreground">
-                  Wykorzystana powierzchnia (CNC)
-                </p>
-                <p className="font-medium">{Math.round(result.usedArea)} mm²</p>
-              </div>
-              <div className="rounded-md border border-border p-3">
-                <p className="text-muted-foreground">Odpad (obszar roboczy)</p>
-                <p className="font-medium">
-                  {Math.round(result.wasteArea)} mm² (
-                  {result.wastePercentage.toFixed(1)}%)
-                </p>
-              </div>
-              <div className="rounded-md border border-border p-3">
-                <p className="text-muted-foreground">Liczba płyt</p>
-                <p className="font-medium">{result.boardCount}</p>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Nominalna powierzchnia elementów (bez kerf/odstępów):{" "}
-              {Math.round(result.nominalUsedArea)} mm²
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary">
-                Umieszczone: {result.placed.length}
-              </Badge>
-              <Badge
-                variant={result.unplaced.length > 0 ? "destructive" : "outline"}
-              >
-                Nieumieszczone: {result.unplaced.length}
-              </Badge>
-            </div>
-          </>
-        )}
       </CardContent>
     </Card>
   );

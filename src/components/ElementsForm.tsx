@@ -45,6 +45,9 @@ const createElementId = () =>
     : `row-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 export function ElementsForm({ elements, onChange }: ElementsFormProps) {
+  const lightInputClass =
+    "border-[#cfd7df] bg-white text-[#111418] placeholder:text-[#6b7682] focus-visible:border-[#111418]/35 focus-visible:ring-[#111418]/10";
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [draft, setDraft] = useState<Omit<ElementInput, "id">>({
     width: 300,
@@ -71,7 +74,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
     onChange([...elements, { id: createElementId(), ...draft }]);
 
   return (
-    <Card>
+    <Card className="border border-[#dbe1e7] bg-white/85 shadow-[0_15px_42px_rgba(17,20,24,0.1)]">
       <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div className="space-y-1">
           <CardTitle>Elementy</CardTitle>
@@ -82,7 +85,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <Table>
-          <TableHeader>
+          <TableHeader className="[&_th]:text-[#111418] [&_th]:font-semibold [&_tr:hover]:bg-transparent">
             <TableRow>
               <TableHead>Wiersz</TableHead>
               <TableHead>Szerokość</TableHead>
@@ -91,9 +94,12 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
               <TableHead className="text-right">Akcje</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="[&_td]:text-[#1f2933]">
             {elements.map((item, rowIndex) => (
-              <TableRow key={item.id}>
+              <TableRow
+                key={item.id}
+                className="border-[#e6ebf0] hover:bg-[#f1f4f7]"
+              >
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <span
@@ -107,6 +113,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                   <Input
                     type="number"
                     min={1}
+                    className={lightInputClass}
                     value={displayInputNumber(item.width)}
                     onChange={(event) =>
                       update(
@@ -121,6 +128,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                   <Input
                     type="number"
                     min={1}
+                    className={lightInputClass}
                     value={displayInputNumber(item.height)}
                     onChange={(event) =>
                       update(
@@ -135,6 +143,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                   <Input
                     type="number"
                     min={1}
+                    className={lightInputClass}
                     value={displayInputNumber(item.quantity)}
                     onChange={(event) =>
                       update(
@@ -171,11 +180,14 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
 
             <div className="grid gap-4 py-1">
               <div className="grid gap-2">
-                <Label htmlFor="new-width">Szerokość (mm)</Label>
+                <Label htmlFor="new-width" className="text-[#111418]">
+                  Szerokość (mm)
+                </Label>
                 <Input
                   id="new-width"
                   type="number"
                   min={1}
+                  className={lightInputClass}
                   value={displayInputNumber(draft.width)}
                   onChange={(event) =>
                     setDraft((current) => ({
@@ -186,11 +198,14 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="new-height">Wysokość (mm)</Label>
+                <Label htmlFor="new-height" className="text-[#111418]">
+                  Wysokość (mm)
+                </Label>
                 <Input
                   id="new-height"
                   type="number"
                   min={1}
+                  className={lightInputClass}
                   value={displayInputNumber(draft.height)}
                   onChange={(event) =>
                     setDraft((current) => ({
@@ -201,11 +216,14 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="new-quantity">Ilość</Label>
+                <Label htmlFor="new-quantity" className="text-[#111418]">
+                  Ilość
+                </Label>
                 <Input
                   id="new-quantity"
                   type="number"
                   min={1}
+                  className={lightInputClass}
                   value={displayInputNumber(draft.quantity)}
                   onChange={(event) =>
                     setDraft((current) => ({
@@ -217,9 +235,9 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
               </div>
 
               <div className="grid gap-2">
-                <Label>Jednostka</Label>
+                <Label className="text-[#111418]">Jednostka</Label>
                 <Select defaultValue="mm" disabled>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full border-[#cfd7df] bg-white text-[#111418]">
                     <SelectValue placeholder="Wybierz jednostkę" />
                   </SelectTrigger>
                   <SelectContent>
@@ -228,7 +246,7 @@ export function ElementsForm({ elements, onChange }: ElementsFormProps) {
                 </Select>
               </div>
 
-              <Label className="gap-3">
+              <Label className="gap-3 text-[#111418]">
                 <Checkbox checked={false} disabled />
                 Obrót wyłączony w MVP
               </Label>

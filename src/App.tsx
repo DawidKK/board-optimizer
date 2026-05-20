@@ -1,14 +1,13 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router";
+import { useState } from "react";
 import { TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { BoardForm } from "./components/BoardForm";
 import { BoardPreview } from "./components/BoardPreview";
 import { CncSettingsForm } from "./components/CncSettingsForm";
 import { ElementsForm } from "./components/ElementsForm";
+import { SummaryCard } from "./components/SummaryCard";
 import { packBoard } from "./optimizer/packBoard";
 import type {
   Board,
@@ -42,15 +41,6 @@ function BoardOptimizerPage() {
     useState<CncCutSettings>(initialCncSettings);
   const [elements, setElements] = useState<ElementInput[]>(initialElements);
   const [result, setResult] = useState<PackResult | null>(null);
-  const totalItems = useMemo(
-    () =>
-      elements.reduce(
-        (sum, item) => sum + Math.max(0, Math.floor(item.quantity || 0)),
-        0,
-      ),
-    [elements],
-  );
-
   const handleOptimize = () => {
     setResult(packBoard(board, elements, cncSettings));
   };
@@ -62,7 +52,11 @@ function BoardOptimizerPage() {
       PRINT_STORAGE_KEY,
       JSON.stringify({ board, result }),
     );
-    window.open("/rozkroj-plyt-meblowych/druk", "_blank", "noopener,noreferrer");
+    window.open(
+      "/rozkroj-plyt-meblowych/druk",
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   return (
@@ -75,41 +69,14 @@ function BoardOptimizerPage() {
           backgroundSize: "56px 56px",
         }}
       />
-      <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 bg-linear-to-br from-primary/20 to-transparent blur-3xl" />
+      <div className="pointer-events-none absolute -left-28 top-0 h-80 w-80 bg-linear-to-br from-[#ff7a1a]/22 to-transparent blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-[-5.5rem] h-80 w-80 bg-linear-to-br from-[#7f8b99]/20 to-transparent blur-3xl" />
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 md:px-8">
         <header className="space-y-3">
-          <p className="text-xs font-medium tracking-wide text-[#5b646d] uppercase">
-            Optymalizacja rozkroju
-          </p>
           <h1 className="text-3xl font-semibold tracking-tight text-[#111418] md:text-4xl">
-            Rozkrój płyt meblowych - Board Optimizer
+            Rozkrój płyt meblowych
           </h1>
-          <p className="max-w-2xl text-sm text-[#3f474f] md:text-base">
-            Program do rozkroju płyt meblowych, który pomaga szybko policzyć
-            rozkrój płyt meblowych, sprawdzić rozmieszczenie elementów i
-            zmniejszyć odpady materiału.
-          </p>
-          <p className="max-w-2xl text-sm text-[#4e5760] md:text-base">
-            Szukasz praktycznych wskazówek? Przeczytaj{" "}
-            <Link
-              to="/blog"
-              className="font-semibold text-[#ff7a1a] underline underline-offset-4"
-            >
-              poradniki o optymalizacji cięcia i produkcji mebli
-            </Link>
-            .
-          </p>
-          <div className="flex items-center gap-2">
-            <Badge className="bg-[#ff7a1a] text-white">Wiele płyt (1..N)</Badge>
-            <Badge
-              variant="outline"
-              className="border-[#d7dde4] bg-white/70 text-[#3f474f]"
-            >
-              Obrót 90° włączony
-            </Badge>
-          </div>
         </header>
 
         <Separator className="bg-[#dbe1e7]" />
@@ -120,11 +87,12 @@ function BoardOptimizerPage() {
             <ElementsForm elements={elements} onChange={setElements} />
           </div>
           <CncSettingsForm settings={cncSettings} onChange={setCncSettings} />
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <Button
               type="button"
               onClick={handleOptimize}
-              className="border border-[#ff7a1a] bg-[#ff7a1a] text-white hover:bg-[#ea6f17]"
+              size="lg"
+              className="min-w-36 border border-[#ff7a1a] bg-[#ff7a1a] px-6 py-2.5 text-base text-white hover:bg-[#ea6f17]"
             >
               Optymalizuj
             </Button>
@@ -132,13 +100,11 @@ function BoardOptimizerPage() {
               type="button"
               onClick={handleOpenPrintPreview}
               disabled={!result}
-              className="border border-[#ff7a1a] bg-[#ff7a1a] text-white hover:bg-[#ea6f17]"
+              size="lg"
+              className="min-w-36 border border-[#ff7a1a] bg-[#ff7a1a] px-6 py-2.5 text-base text-white hover:bg-[#ea6f17]"
             >
               Drukuj
             </Button>
-            <span className="text-sm text-[#5b646d]">
-              Łączna liczba elementów: {totalItems}
-            </span>
           </div>
 
           {result && result.unplaced.length > 0 && (
@@ -159,6 +125,7 @@ function BoardOptimizerPage() {
           )}
 
           <BoardPreview board={board} result={result} />
+          {result && <SummaryCard result={result} />}
         </section>
       </div>
     </main>
