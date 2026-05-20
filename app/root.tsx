@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -8,12 +8,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation,
-} from 'react-router'
+} from "react-router";
+import ReactGA from "react-ga4";
 
-import stylesheet from '../src/index.css?url'
+import stylesheet from "../src/index.css?url";
 
 export function links() {
-  return [{ rel: 'stylesheet', href: stylesheet }]
+  return [{ rel: "stylesheet", href: stylesheet }];
 }
 
 function AppNavbar() {
@@ -32,8 +33,8 @@ function AppNavbar() {
             className={({ isActive }) =>
               `text-sm font-medium underline underline-offset-4 transition-colors ${
                 isActive
-                  ? 'text-primary decoration-primary'
-                  : 'text-white/85 decoration-white/65 hover:text-white'
+                  ? "text-primary decoration-primary"
+                  : "text-white/85 decoration-white/65 hover:text-white"
               }`
             }
           >
@@ -44,8 +45,8 @@ function AppNavbar() {
             className={({ isActive }) =>
               `text-sm font-medium underline underline-offset-4 transition-colors ${
                 isActive
-                  ? 'text-primary decoration-primary'
-                  : 'text-white/85 decoration-white/65 hover:text-white'
+                  ? "text-primary decoration-primary"
+                  : "text-white/85 decoration-white/65 hover:text-white"
               }`
             }
           >
@@ -56,8 +57,8 @@ function AppNavbar() {
             className={({ isActive }) =>
               `text-sm font-medium underline underline-offset-4 transition-colors ${
                 isActive
-                  ? 'text-primary decoration-primary'
-                  : 'text-white/85 decoration-white/65 hover:text-white'
+                  ? "text-primary decoration-primary"
+                  : "text-white/85 decoration-white/65 hover:text-white"
               }`
             }
           >
@@ -66,7 +67,7 @@ function AppNavbar() {
         </nav>
       </div>
     </header>
-  )
+  );
 }
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -84,32 +85,66 @@ export function Layout({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
-  )
+  );
+}
+
+function AnalyticsTracker() {
+  const location = useLocation();
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    const measurementId = import.meta.env.VITE_GA4_MEASUREMENT_ID as
+      | string
+      | undefined;
+
+    if (!measurementId) {
+      return;
+    }
+
+    if (!initializedRef.current) {
+      ReactGA.initialize(measurementId);
+      initializedRef.current = true;
+    }
+
+    ReactGA.send({
+      hitType: "pageview",
+      page: `${location.pathname}${location.search}${location.hash}`,
+      title: document.title,
+    });
+  }, [location.hash, location.pathname, location.search]);
+
+  return null;
 }
 
 export default function AppRoot() {
-  const location = useLocation()
-  const isPrintRoute = location.pathname === '/rozkroj-plyt-meblowych/druk'
+  const location = useLocation();
+  const isPrintRoute = location.pathname === "/rozkroj-plyt-meblowych/druk";
 
   if (isPrintRoute) {
-    return <Outlet />
+    return (
+      <>
+        <AnalyticsTracker />
+        <Outlet />
+      </>
+    );
   }
 
   return (
     <>
+      <AnalyticsTracker />
       <AppNavbar />
       <Outlet />
     </>
-  )
+  );
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {
-  let message = 'Wystąpił nieoczekiwany błąd.'
+  let message = "Wystąpił nieoczekiwany błąd.";
 
   if (isRouteErrorResponse(error)) {
-    message = `${error.status} ${error.statusText}`
+    message = `${error.status} ${error.statusText}`;
   } else if (error instanceof Error) {
-    message = error.message
+    message = error.message;
   }
 
   return (
@@ -117,5 +152,5 @@ export function ErrorBoundary({ error }: { error: unknown }) {
       <h1 className="text-xl font-semibold">Błąd aplikacji</h1>
       <p className="mt-2 text-sm text-muted-foreground">{message}</p>
     </main>
-  )
+  );
 }
