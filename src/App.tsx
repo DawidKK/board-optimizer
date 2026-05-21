@@ -155,8 +155,8 @@ function BoardOptimizerPage({ prelude }: BoardOptimizerPageProps) {
           )}
 
           <BoardPreview board={board} result={result} />
-          {prelude}
           {result && <SummaryCard board={board} result={result} />}
+          {prelude}
         </section>
       </div>
     </main>
