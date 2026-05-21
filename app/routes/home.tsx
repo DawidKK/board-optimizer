@@ -5,7 +5,8 @@ const pageTitle =
   'Rozkrój płyt meblowych online - optymalizacja cięcia płyt | PILSEN'
 const pageDescription =
   'Program do rozkroju płyt meblowych online. Planuj optymalizację cięcia, ograniczaj odpady i przygotuj produkcję mebli pod CNC.'
-const canonicalUrl = 'https://board-optimizer.netlify.app/rozkroj-plyt-meblowych'
+const canonicalUrl = 'https://pilsen.pl/rozkroj-plyt-meblowych'
+const ogImageUrl = 'https://pilsen.pl/favicon.svg'
 
 export const meta: MetaFunction = () => [
   { title: pageTitle },
@@ -16,9 +17,11 @@ export const meta: MetaFunction = () => [
   { property: 'og:description', content: pageDescription },
   { property: 'og:type', content: 'website' },
   { property: 'og:url', content: canonicalUrl },
+  { property: 'og:image', content: ogImageUrl },
   { name: 'twitter:card', content: 'summary' },
   { name: 'twitter:title', content: pageTitle },
   { name: 'twitter:description', content: pageDescription },
+  { name: 'twitter:image', content: ogImageUrl },
 ]
 
 export default function HomeRoute() {

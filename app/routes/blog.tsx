@@ -6,7 +6,8 @@ import { BLOG_POSTS } from '../../src/content/blogPosts'
 const pageTitle = 'Blog o rozkroju płyt meblowych i produkcji mebli | PILSEN'
 const pageDescription =
   'Poradniki dla stolarzy i produkcji mebli: rozkrój płyt meblowych, optymalizacja cięcia, nesting CNC i przygotowanie produkcji.'
-const canonicalUrl = 'https://board-optimizer.netlify.app/blog'
+const canonicalUrl = 'https://pilsen.pl/blog'
+const ogImageUrl = 'https://pilsen.pl/favicon.svg'
 
 export const meta: MetaFunction = () => [
   { title: pageTitle },
@@ -17,9 +18,11 @@ export const meta: MetaFunction = () => [
   { property: 'og:description', content: pageDescription },
   { property: 'og:type', content: 'website' },
   { property: 'og:url', content: canonicalUrl },
+  { property: 'og:image', content: ogImageUrl },
   { name: 'twitter:card', content: 'summary' },
   { name: 'twitter:title', content: pageTitle },
   { name: 'twitter:description', content: pageDescription },
+  { name: 'twitter:image', content: ogImageUrl },
 ]
 
 function formatDate(date: string) {

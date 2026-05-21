@@ -8,7 +8,8 @@ import { Button } from "../../src/components/ui/button";
 const pageTitle = "Wkrótce - Przyszłość produkcji mebli | PILSEN";
 const pageDescription =
   "Poznaj nadchodzącą platformę PILSEN: rozkrój płyt meblowych, nesting CNC i komponenty gotowe do produkcji mebli.";
-const canonicalUrl = "https://board-optimizer.netlify.app/coming-soon";
+const canonicalUrl = "https://pilsen.pl/coming-soon";
+const ogImageUrl = "https://pilsen.pl/favicon.svg";
 
 export const meta: MetaFunction = () => [
   { title: pageTitle },
@@ -19,9 +20,11 @@ export const meta: MetaFunction = () => [
   { property: "og:description", content: pageDescription },
   { property: "og:type", content: "website" },
   { property: "og:url", content: canonicalUrl },
+  { property: "og:image", content: ogImageUrl },
   { name: "twitter:card", content: "summary" },
   { name: "twitter:title", content: pageTitle },
   { name: "twitter:description", content: pageDescription },
+  { name: "twitter:image", content: ogImageUrl },
 ];
 
 export function ComingSoonPage() {

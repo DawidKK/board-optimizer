@@ -19,6 +19,58 @@ export type BlogPost = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'nowosc-rozkroj-zgodnie-z-uslojeniem-plyty',
+    title: 'Nowość: rozkrój zgodnie z usłojeniem płyty',
+    excerpt:
+      'Dodaliśmy funkcję zachowania kierunku usłojenia podczas optymalizacji oraz legendę usłojenia w podglądzie płyty.',
+    publishDate: '2026-05-21',
+    metaTitle: 'Rozkrój zgodnie z usłojeniem płyty | Blog PILSEN',
+    metaDescription:
+      'Sprawdź nową funkcję rozkroju zgodnie z usłojeniem płyty: jak ją włączyć, ustawić kierunek i odczytać legendę usłojenia w podglądzie.',
+    lead:
+      'W aplikacji dodaliśmy nową funkcjonalność: rozkrój zgodnie z usłojeniem płyty. Po jej włączeniu algorytm zachowuje wskazany kierunek słojów i nie obraca elementów w sposób, który łamałby to założenie. Dzięki temu układ lepiej odpowiada realnym wymaganiom produkcyjnym przy elementach, gdzie kierunek dekoru lub włókien ma znaczenie.',
+    sections: [
+      {
+        heading: 'Dlaczego ta funkcja jest ważna',
+        paragraphs: [
+          'W wielu realizacjach kierunek usłojenia wpływa na finalny wygląd frontów i korpusów. Niewłaściwe ustawienie elementu może powodować różnice wizualne i konieczność poprawek.',
+          'Nowy tryb pozwala od razu liczyć rozkrój z zachowaniem kierunku, bez ręcznego sprawdzania każdego elementu po optymalizacji.',
+        ],
+      },
+      {
+        heading: 'Jak korzystać z rozkroju zgodnie z usłojeniem - krok po kroku',
+        paragraphs: [
+          '1. Uzupełnij wymiary płyty oraz listę elementów (szerokość, wysokość, ilość).',
+          '2. W sekcji Elementy zaznacz opcję Zachowaj kierunek usłojenia.',
+          '3. Wybierz kierunek usłojenia: Szerokość (wzdłuż płyty) albo Wysokość (wzdłuż płyty).',
+          '4. Kliknij Optymalizuj, aby wygenerować układ z zachowaniem wybranego kierunku.',
+          '5. Sprawdź podgląd: nad planszą płyty pojawia się legenda z kierunkiem usłojenia.',
+          '6. Jeśli część elementów się nie mieści, aplikacja pokaże komunikat, że przy zachowaniu kierunku usłojenia nie udało się ich umieścić na płycie.',
+        ],
+      },
+      {
+        heading: 'Legenda i oznaczenia usłojenia w podglądzie',
+        paragraphs: [
+          'W podglądzie, przy aktywnej funkcji, widoczna jest legenda z informacją: Kierunek usłojenia - wzdłuż szerokości albo wzdłuż wysokości.',
+          'Sama płyta i elementy mają dodatkowe oznaczenia graficzne kierunku słojów, co ułatwia szybką weryfikację poprawności układu przed cięciem.',
+        ],
+      },
+    ],
+    mistakes: [
+      'Włączenie opcji usłojenia bez wyboru właściwego kierunku dla konkretnej płyty.',
+      'Porównywanie wyniku z usłojeniem i bez usłojenia bez uwzględnienia, że w tym trybie elementy nie mogą być dowolnie obracane.',
+      'Pomijanie kontroli legendy i oznaczeń słojów przed zatwierdzeniem planu na produkcję.',
+    ],
+    checklist: [
+      'Włącz opcję Zachowaj kierunek usłojenia.',
+      'Wybierz poprawną oś usłojenia: szerokość lub wysokość.',
+      'Uruchom optymalizację i sprawdź podgląd.',
+      'Zweryfikuj legendę usłojenia oraz listę elementów nieumieszczonych.',
+    ],
+    summary:
+      'Nowa funkcja rozkroju zgodnie z usłojeniem płyty pozwala lepiej dopasować wynik do wymagań stolarskich: ustawiasz kierunek, liczysz układ i weryfikujesz go w podglądzie z czytelną legendą słojów.',
+  },
+  {
     slug: 'podglad-do-druku-monochromatyczny-rozkroj-plyt',
     title:
       'Nowość: podgląd do wydruku rozkroju płyt meblowych (wersja monochromatyczna)',

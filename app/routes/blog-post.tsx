@@ -3,7 +3,8 @@ import { Link } from 'react-router'
 
 import { BLOG_POSTS, getBlogPostBySlug } from '../../src/content/blogPosts'
 
-const baseUrl = 'https://board-optimizer.netlify.app'
+const baseUrl = 'https://pilsen.pl'
+const ogImageUrl = `${baseUrl}/favicon.svg`
 
 export const meta: MetaFunction = ({ params }) => {
   const post = getBlogPostBySlug(params.slug ?? '')
@@ -22,13 +23,16 @@ export const meta: MetaFunction = ({ params }) => {
       { property: 'og:description', content: description },
       { property: 'og:type', content: 'article' },
       { property: 'og:url', content: url },
+      { property: 'og:image', content: ogImageUrl },
       { name: 'twitter:card', content: 'summary' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: ogImageUrl },
     ]
   }
 
   const url = `${baseUrl}/blog/${post.slug}`
+  const publishedTime = `${post.publishDate}T00:00:00Z`
 
   return [
     { title: post.metaTitle },
@@ -39,9 +43,12 @@ export const meta: MetaFunction = ({ params }) => {
     { property: 'og:description', content: post.metaDescription },
     { property: 'og:type', content: 'article' },
     { property: 'og:url', content: url },
+    { property: 'og:image', content: ogImageUrl },
+    { property: 'article:published_time', content: publishedTime },
     { name: 'twitter:card', content: 'summary' },
     { name: 'twitter:title', content: post.metaTitle },
     { name: 'twitter:description', content: post.metaDescription },
+    { name: 'twitter:image', content: ogImageUrl },
   ]
 }
 
@@ -61,9 +68,35 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
   }
 
   const relatedPosts = BLOG_POSTS.filter((item) => item.slug !== post.slug)
+  const postUrl = `${baseUrl}/blog/${post.slug}`
+  const publishedTime = `${post.publishDate}T00:00:00Z`
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.metaDescription,
+    datePublished: publishedTime,
+    dateModified: publishedTime,
+    inLanguage: 'pl-PL',
+    mainEntityOfPage: postUrl,
+    image: [ogImageUrl],
+    author: {
+      '@type': 'Organization',
+      name: 'PILSEN',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'PILSEN',
+      logo: {
+        '@type': 'ImageObject',
+        url: ogImageUrl,
+      },
+    },
+  }
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <div
         className="pointer-events-none absolute inset-0"
         style={{
