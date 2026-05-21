@@ -1,10 +1,13 @@
 import type { MetaFunction } from 'react-router'
+
 import BoardOptimizerPage from '../../src/App'
+import { BoardCuttingPillarContent } from '../../src/components/PillarContent'
+import { boardCuttingPillarContent } from '../../src/content/pillar/boardCutting'
 
 const pageTitle =
   'Rozkrój płyt meblowych online - optymalizacja cięcia płyt | PILSEN'
 const pageDescription =
-  'Program do rozkroju płyt meblowych online. Planuj optymalizację cięcia, ograniczaj odpady i przygotuj produkcję mebli pod CNC.'
+  'Program do rozkroju płyt meblowych online. Oblicz układ formatek, ogranicz odpad materiału i przygotuj plan cięcia pod produkcję.'
 const canonicalUrl = 'https://pilsen.pl/rozkroj-plyt-meblowych'
 const ogImageUrl = 'https://pilsen.pl/favicon.svg'
 
@@ -25,5 +28,26 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function HomeRoute() {
-  return <BoardOptimizerPage />
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: boardCuttingPillarContent.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <BoardOptimizerPage prelude={<BoardCuttingPillarContent />} />
+    </>
+  )
 }

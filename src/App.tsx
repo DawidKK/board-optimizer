@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,11 @@ const initialCncSettings: CncCutSettings = {
   boardMargin: 10,
 };
 
-function BoardOptimizerPage() {
+type BoardOptimizerPageProps = {
+  prelude?: ReactNode;
+};
+
+function BoardOptimizerPage({ prelude }: BoardOptimizerPageProps) {
   const [board, setBoard] = useState<Board>(initialBoard);
   const [cncSettings, setCncSettings] =
     useState<CncCutSettings>(initialCncSettings);
@@ -151,6 +155,7 @@ function BoardOptimizerPage() {
           )}
 
           <BoardPreview board={board} result={result} />
+          {prelude}
           {result && <SummaryCard board={board} result={result} />}
         </section>
       </div>
