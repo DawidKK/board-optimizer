@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router'
 
 import {
   boardCuttingPillarContent,
@@ -6,10 +7,16 @@ import {
   type PillarSection,
 } from '@/content/pillar/boardCutting'
 
+type ContextualLink = {
+  label: string
+  href: string
+}
+
 type PillarContentProps = {
   quickAnswer: string
   sections: PillarSection[]
   faq: FaqItem[]
+  contextualLinks?: ContextualLink[]
 }
 
 function ContentCard({ title, children }: { title: string; children: ReactNode }) {
@@ -24,7 +31,7 @@ function ContentCard({ title, children }: { title: string; children: ReactNode }
   )
 }
 
-export function PillarContent({ quickAnswer, sections, faq }: PillarContentProps) {
+export function PillarContent({ quickAnswer, sections, faq, contextualLinks }: PillarContentProps) {
   return (
     <div className="space-y-6">
       <section
@@ -44,6 +51,30 @@ export function PillarContent({ quickAnswer, sections, faq }: PillarContentProps
           ))}
         </ContentCard>
       ))}
+
+      {contextualLinks && contextualLinks.length > 0 && (
+        <section
+          className="border border-[#dbe1e7] bg-white/90 p-6"
+          style={{ clipPath: 'inset(0 round 20px)' }}
+        >
+          <h2 className="text-xl font-semibold text-[#111418]">Landingi materiałowe</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#3f474f]">
+            Sprawdź dedykowane poradniki dla najczęściej używanych materiałów.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {contextualLinks.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+                style={{ clipPath: 'inset(0 round 12px)' }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section
         className="border border-[#dbe1e7] bg-white/90 p-6"

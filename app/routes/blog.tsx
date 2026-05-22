@@ -59,6 +59,26 @@ export default function BlogRoute() {
           </p>
         </header>
 
+        <section className="mt-8 border border-[#dbe1e7] bg-white/85 p-6" style={{ clipPath: 'inset(0 round 20px)' }}>
+          <h2 className="text-xl font-semibold text-[#111418]">Landingi materiałowe</h2>
+          <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <Link
+              to="/rozkroj-plyt-mdf"
+              className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+              style={{ clipPath: 'inset(0 round 12px)' }}
+            >
+              Rozkrój płyt MDF
+            </Link>
+            <Link
+              to="/rozkroj-sklejki"
+              className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+              style={{ clipPath: 'inset(0 round 12px)' }}
+            >
+              Rozkrój sklejki
+            </Link>
+          </div>
+        </section>
+
         <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {BLOG_POSTS.map((post) => (
             <article

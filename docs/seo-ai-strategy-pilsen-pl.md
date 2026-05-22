@@ -440,10 +440,10 @@ Status: `[]` = do zrobienia, `[x]` = zrobione
 - [ ] Dodać `HowTo` + `FAQPage` schema.
 
 ### Krok 3 - Wdrożenie 2 landingów materiałowych (MDF i sklejka)
-- [ ] Opublikować `/rozkroj-plyt-mdf`.
-- [ ] Opublikować `/rozkroj-sklejki`.
-- [ ] Dla każdej strony dodać: Quick Answer, tabela parametrów, FAQ, CTA do narzędzia.
-- [ ] Podpiąć linkowanie z filarów i bloga.
+- [x] Opublikować `/rozkroj-plyt-mdf`.
+- [x] Opublikować `/rozkroj-sklejki`.
+- [x] Dla każdej strony dodać: Quick Answer, tabela parametrów, FAQ, CTA do narzędzia.
+- [x] Podpiąć linkowanie z filarów i bloga.
 
 ### Krok 4 - Przebudowa 2 istniejących artykułów o najwyższym potencjale AI
 - [ ] Przepisać `/blog/jak-poprawnie-uzywac-narzedzia-do-rozkroju-plyt-meblowych` pod template AI-first.

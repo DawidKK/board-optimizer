@@ -8,6 +8,11 @@ export type FaqItem = {
   answer: string
 }
 
+export type PillarContextualLink = {
+  label: string
+  href: string
+}
+
 export const boardCuttingPillarContent = {
   quickAnswer:
     'Rozkrój płyt meblowych to automatyczne rozmieszczenie formatek na jednej płycie tak, aby zmniejszyć odpad i przyspieszyć przygotowanie produkcji. W praktyce podajesz wymiary płyty oraz elementów, a narzędzie wylicza układ z pozycjami X/Y, pokazuje nieumieszczone formatki i procent wykorzystania materiału.',
@@ -48,6 +53,16 @@ export const boardCuttingPillarContent = {
       ],
     },
   ] as PillarSection[],
+  contextualLinks: [
+    {
+      label: 'Rozkrój płyt MDF',
+      href: '/rozkroj-plyt-mdf',
+    },
+    {
+      label: 'Rozkrój sklejki',
+      href: '/rozkroj-sklejki',
+    },
+  ] as PillarContextualLink[],
   faq: [
     {
       question: 'Jak policzyć odpad po rozkroju płyty meblowej?',
