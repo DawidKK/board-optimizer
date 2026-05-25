@@ -49,10 +49,21 @@ export default function LandingMdfRoute() {
     })),
   }
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Strona główna', item: 'https://pilsen.pl/' },
+      { '@type': 'ListItem', position: 2, name: 'Rozkrój płyt meblowych', item: 'https://pilsen.pl/rozkroj-plyt-meblowych' },
+      { '@type': 'ListItem', position: 3, name: content.title, item: canonicalUrl },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <MaterialLandingPage content={content} />
     </>
   )

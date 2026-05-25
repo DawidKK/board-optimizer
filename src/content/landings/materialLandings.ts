@@ -30,6 +30,10 @@ export type MaterialLandingContent = {
     label: string
     href: string
   }
+  glossaryLinks: {
+    label: string
+    href: string
+  }[]
 }
 
 export const materialLandings: Record<MaterialLandingContent['slug'], MaterialLandingContent> = {
@@ -135,6 +139,12 @@ export const materialLandings: Record<MaterialLandingContent['slug'], MaterialLa
       label: 'Optymalizuj MDF w narzędziu',
       href: '/rozkroj-plyt-meblowych',
     },
+    glossaryLinks: [
+      { label: 'Kerf', href: '/slownik/kerf' },
+      { label: 'Formatka', href: '/slownik/formatka' },
+      { label: 'Odstęp bezpieczeństwa', href: '/slownik/odstep-bezpieczenstwa' },
+      { label: 'Yield materiałowy', href: '/slownik/yield-materialowy' },
+    ],
   },
   'rozkroj-sklejki': {
     slug: 'rozkroj-sklejki',
@@ -238,5 +248,11 @@ export const materialLandings: Record<MaterialLandingContent['slug'], MaterialLa
       label: 'Optymalizuj sklejkę w narzędziu',
       href: '/rozkroj-plyt-meblowych',
     },
+    glossaryLinks: [
+      { label: 'Usłojenie płyty', href: '/slownik/uslojenie-plyty' },
+      { label: 'Nesting CNC', href: '/slownik/nesting-cnc' },
+      { label: 'Margines technologiczny', href: '/slownik/margines-technologiczny' },
+      { label: 'Elementy nieumieszczone', href: '/slownik/elementy-nieumieszczone' },
+    ],
   },
 }

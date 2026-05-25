@@ -34,8 +34,18 @@ function formatDate(date: string) {
 }
 
 export default function BlogRoute() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Strona główna', item: 'https://pilsen.pl/' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: canonicalUrl },
+    ],
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -46,6 +56,13 @@ export default function BlogRoute() {
       />
 
       <section className="relative mx-auto w-full max-w-7xl px-6 pt-12 pb-16 md:px-10">
+        <nav className="mb-5 text-sm text-[#5b646d]">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li><Link to="/" className="underline underline-offset-4">Home</Link></li>
+            <li>/</li>
+            <li className="text-[#111418]">Blog</li>
+          </ol>
+        </nav>
         <header className="max-w-3xl space-y-4">
           <p className="text-xs font-semibold tracking-[0.24em] text-[#5b646d] uppercase">
             BLOG PILSEN

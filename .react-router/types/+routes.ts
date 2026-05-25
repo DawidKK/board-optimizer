@@ -29,6 +29,17 @@ type Pages = {
   "/rozkroj-sklejki": {
     params: {};
   };
+  "/slownik": {
+    params: {};
+  };
+  "/slownik/:slug": {
+    params: {
+      "slug": string;
+    };
+  };
+  "/faq/rozkroj-plyt": {
+    params: {};
+  };
   "/blog": {
     params: {};
   };
@@ -42,7 +53,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych" | "/rozkroj-plyt-meblowych/druk" | "/rozkroj-plyt-mdf" | "/rozkroj-sklejki" | "/blog" | "/blog/:slug";
+    page: "/" | "/coming-soon" | "/rozkroj-plyt-meblowych" | "/rozkroj-plyt-meblowych/druk" | "/rozkroj-plyt-mdf" | "/rozkroj-sklejki" | "/slownik" | "/slownik/:slug" | "/faq/rozkroj-plyt" | "/blog" | "/blog/:slug";
   };
   "routes/index.tsx": {
     id: "routes/index";
@@ -68,6 +79,18 @@ type RouteFiles = {
     id: "routes/landing-sklejka";
     page: "/rozkroj-sklejki";
   };
+  "routes/glossary.tsx": {
+    id: "routes/glossary";
+    page: "/slownik";
+  };
+  "routes/glossary-entry.tsx": {
+    id: "routes/glossary-entry";
+    page: "/slownik/:slug";
+  };
+  "routes/faq-rozkroj-plyt.tsx": {
+    id: "routes/faq-rozkroj-plyt";
+    page: "/faq/rozkroj-plyt";
+  };
   "routes/blog.tsx": {
     id: "routes/blog";
     page: "/blog";
@@ -86,6 +109,9 @@ type RouteModules = {
   "routes/print-layout": typeof import("./app/routes/print-layout.tsx");
   "routes/landing-mdf": typeof import("./app/routes/landing-mdf.tsx");
   "routes/landing-sklejka": typeof import("./app/routes/landing-sklejka.tsx");
+  "routes/glossary": typeof import("./app/routes/glossary.tsx");
+  "routes/glossary-entry": typeof import("./app/routes/glossary-entry.tsx");
+  "routes/faq-rozkroj-plyt": typeof import("./app/routes/faq-rozkroj-plyt.tsx");
   "routes/blog": typeof import("./app/routes/blog.tsx");
   "routes/blog-post": typeof import("./app/routes/blog-post.tsx");
 };

@@ -7,6 +7,9 @@ export default [
   route('rozkroj-plyt-meblowych/druk', 'routes/print-layout.tsx'),
   route('rozkroj-plyt-mdf', 'routes/landing-mdf.tsx'),
   route('rozkroj-sklejki', 'routes/landing-sklejka.tsx'),
+  route('slownik', 'routes/glossary.tsx'),
+  route('slownik/:slug', 'routes/glossary-entry.tsx'),
+  route('faq/rozkroj-plyt', 'routes/faq-rozkroj-plyt.tsx'),
   route('blog', 'routes/blog.tsx'),
   route('blog/:slug', 'routes/blog-post.tsx'),
 ] satisfies RouteConfig

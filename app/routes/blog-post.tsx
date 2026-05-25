@@ -67,9 +67,19 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
     throw new Response('Nie znaleziono wpisu.', { status: 404 })
   }
 
-  const relatedPosts = BLOG_POSTS.filter((item) => item.slug !== post.slug)
+  const candidates = BLOG_POSTS.filter((item) => item.slug !== post.slug)
+  const pickByIntent = (intent: 'TOFU' | 'MOFU' | 'BOFU', count: number) =>
+    candidates.filter((item) => item.intent === intent).slice(0, count)
+  const relatedPosts = [
+    ...pickByIntent('TOFU', 2),
+    ...pickByIntent('MOFU', 1),
+    ...pickByIntent('BOFU', 1),
+  ]
+  const fallbackRelated = candidates.filter((item) => !relatedPosts.some((selected) => selected.slug === item.slug))
+  const resolvedRelatedPosts = [...relatedPosts, ...fallbackRelated].slice(0, 4)
   const postUrl = `${baseUrl}/blog/${post.slug}`
   const publishedTime = `${post.publishDate}T00:00:00Z`
+  const hasFaq = Boolean(post.faq && post.faq.length > 0)
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -93,10 +103,27 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
       },
     },
   }
+  const faqJsonLd = hasFaq
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: post.faq?.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      {faqJsonLd ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      ) : null}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -117,6 +144,16 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
           <p className="text-base leading-relaxed text-[#3f474f] md:text-lg">{post.lead}</p>
         </header>
 
+        {post.quickAnswer ? (
+          <section
+            className="mt-8 border border-[#dbe1e7] bg-white/90 p-6"
+            style={{ clipPath: 'inset(0 round 20px)' }}
+          >
+            <h2 className="text-2xl font-semibold text-[#111418]">Quick Answer</h2>
+            <p className="mt-3 text-base leading-relaxed text-[#3f474f]">{post.quickAnswer}</p>
+          </section>
+        ) : null}
+
         <section className="mt-8 space-y-6">
           {post.sections.map((section) => (
             <section
@@ -133,6 +170,39 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
             </section>
           ))}
         </section>
+
+        {post.decisionTable ? (
+          <section
+            className="mt-8 border border-[#dbe1e7] bg-white/90 p-6"
+            style={{ clipPath: 'inset(0 round 20px)' }}
+          >
+            <h2 className="text-2xl font-semibold text-[#111418]">{post.decisionTable.caption}</h2>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-[640px] border-collapse text-left text-sm text-[#3f474f]">
+                <thead>
+                  <tr>
+                    {post.decisionTable.columns.map((column) => (
+                      <th key={column} className="border border-[#dbe1e7] bg-[#f8fafc] px-3 py-2 font-semibold text-[#111418]">
+                        {column}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {post.decisionTable.rows.map((row, index) => (
+                    <tr key={`${row.join('-')}-${index}`}>
+                      {row.map((cell, cellIndex) => (
+                        <td key={`${cell}-${cellIndex}`} className="border border-[#dbe1e7] px-3 py-2 align-top">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        ) : null}
 
         <section
           className="mt-8 border border-[#dbe1e7] bg-white/85 p-6"
@@ -158,18 +228,35 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
           </ul>
         </section>
 
+        {hasFaq ? (
+          <section
+            className="mt-8 border border-[#dbe1e7] bg-white/90 p-6"
+            style={{ clipPath: 'inset(0 round 20px)' }}
+          >
+            <h2 className="text-2xl font-semibold text-[#111418]">FAQ</h2>
+            <div className="mt-4 space-y-4">
+              {post.faq?.map((item) => (
+                <article key={item.question} className="border border-[#dbe1e7] bg-[#f8fafc] p-4">
+                  <h3 className="text-lg font-semibold text-[#111418]">{item.question}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-[#3f474f]">{item.answer}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         <section
           className="mt-8 border border-[#dbe1e7] bg-white/90 p-6"
           style={{ clipPath: 'inset(0 round 20px)' }}
         >
-          <h2 className="text-2xl font-semibold text-[#111418]">Podsumowanie</h2>
-          <p className="mt-3 text-base leading-relaxed text-[#3f474f]">{post.summary}</p>
+          <h2 className="text-2xl font-semibold text-[#111418]">{post.conclusion ? 'Wniosek' : 'Podsumowanie'}</h2>
+          <p className="mt-3 text-base leading-relaxed text-[#3f474f]">{post.conclusion ?? post.summary}</p>
         </section>
 
         <section className="mt-8 border border-[#dbe1e7] bg-white/85 p-6" style={{ clipPath: 'inset(0 round 20px)' }}>
           <h2 className="text-xl font-semibold text-[#111418]">Czytaj także</h2>
           <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
-            {relatedPosts.map((item) => (
+            {resolvedRelatedPosts.map((item) => (
               <Link
                 key={item.slug}
                 to={`/blog/${item.slug}`}
@@ -208,6 +295,43 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
               style={{ clipPath: 'inset(0 round 12px)' }}
             >
               Rozkrój sklejki
+            </Link>
+          </div>
+        </section>
+
+        <section className="mt-8 border border-[#dbe1e7] bg-white/85 p-6" style={{ clipPath: 'inset(0 round 20px)' }}>
+          <h2 className="text-xl font-semibold text-[#111418]">Słownik pojęć</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#3f474f]">
+            Uporządkuj terminy techniczne i przejdź do krótkich definicji z przykładami praktycznymi.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <Link
+              to="/slownik/kerf"
+              className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+              style={{ clipPath: 'inset(0 round 12px)' }}
+            >
+              Kerf
+            </Link>
+            <Link
+              to="/slownik/nesting-cnc"
+              className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+              style={{ clipPath: 'inset(0 round 12px)' }}
+            >
+              Nesting CNC
+            </Link>
+            <Link
+              to="/slownik/cutlist"
+              className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+              style={{ clipPath: 'inset(0 round 12px)' }}
+            >
+              Cutlist
+            </Link>
+            <Link
+              to="/slownik/uslojenie-plyty"
+              className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+              style={{ clipPath: 'inset(0 round 12px)' }}
+            >
+              Usłojenie płyty
             </Link>
           </div>
         </section>

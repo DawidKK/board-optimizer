@@ -64,6 +64,30 @@ function AppNavbar() {
           >
             Blog
           </NavLink>
+          <NavLink
+            to="/faq/rozkroj-plyt"
+            className={({ isActive }) =>
+              `text-sm font-medium underline underline-offset-4 transition-colors ${
+                isActive
+                  ? "text-primary decoration-primary"
+                  : "text-white/85 decoration-white/65 hover:text-white"
+              }`
+            }
+          >
+            FAQ
+          </NavLink>
+          <NavLink
+            to="/slownik"
+            className={({ isActive }) =>
+              `text-sm font-medium underline underline-offset-4 transition-colors ${
+                isActive
+                  ? "text-primary decoration-primary"
+                  : "text-white/85 decoration-white/65 hover:text-white"
+              }`
+            }
+          >
+            Słownik
+          </NavLink>
         </nav>
       </div>
     </header>

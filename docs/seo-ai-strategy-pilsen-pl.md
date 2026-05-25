@@ -446,28 +446,28 @@ Status: `[]` = do zrobienia, `[x]` = zrobione
 - [x] Podpiąć linkowanie z filarów i bloga.
 
 ### Krok 4 - Przebudowa 2 istniejących artykułów o najwyższym potencjale AI
-- [ ] Przepisać `/blog/jak-poprawnie-uzywac-narzedzia-do-rozkroju-plyt-meblowych` pod template AI-first.
-- [ ] Przepisać `/blog/nowosc-rozkroj-zgodnie-z-uslojeniem-plyty` pod template AI-first.
-- [ ] Dodać sekcje: Quick Answer, tabela, FAQ, “Wniosek”.
-- [ ] Uzupełnić `FAQPage` (jeśli FAQ widoczne w treści).
+- [x] Przepisać `/blog/jak-poprawnie-uzywac-narzedzia-do-rozkroju-plyt-meblowych` pod template AI-first.
+- [x] Przepisać `/blog/nowosc-rozkroj-zgodnie-z-uslojeniem-plyty` pod template AI-first.
+- [x] Dodać sekcje: Quick Answer, tabela, FAQ, “Wniosek”.
+- [x] Uzupełnić `FAQPage` (jeśli FAQ widoczne w treści).
 
 ### Krok 5 - Budowa FAQ Hub `/faq/rozkroj-plyt`
-- [ ] Utworzyć dedykowaną stronę FAQ z pytaniami wysokiej intencji.
-- [ ] Każdą odpowiedź utrzymać w 40-80 słowach.
-- [ ] Dodać linki do stron filarowych i kalkulatorów.
-- [ ] Dodać `FAQPage` schema.
+- [x] Utworzyć dedykowaną stronę FAQ z pytaniami wysokiej intencji.
+- [x] Każdą odpowiedź utrzymać w 40-80 słowach.
+- [x] Dodać linki do stron filarowych i kalkulatorów.
+- [x] Dodać `FAQPage` schema.
 
 ### Krok 6 - Start słownika pojęć (glossary 10 haseł)
-- [ ] Opublikować minimum 10 stron definicyjnych (`/slownik/...`).
-- [ ] Każda definicja: 1 zdanie + przykład praktyczny + linki kontekstowe.
-- [ ] Dodać breadcrumbs oraz link zwrotny do odpowiedniego filaru.
-- [ ] Rozmieścić linki do słownika we wpisach i landingach.
+- [x] Opublikować minimum 10 stron definicyjnych (`/slownik/...`).
+- [x] Każda definicja: 1 zdanie + przykład praktyczny + linki kontekstowe.
+- [x] Dodać breadcrumbs oraz link zwrotny do odpowiedniego filaru.
+- [x] Rozmieścić linki do słownika we wpisach i landingach.
 
 ### Krok 7 - Publikacja 10 nowych artykułów klastrowych (TOFU/MOFU/BOFU)
-- [ ] Wdrażać miks: 5 TOFU, 3 MOFU, 2 BOFU.
-- [ ] Każdy artykuł budować wg template: Quick Answer -> HowTo/porównanie -> FAQ -> CTA.
-- [ ] Każdy artykuł musi mieć min. 4 linki wewnętrzne.
-- [ ] Priorytetowo publikować tematy z SEO 4-5 i AI 4-5.
+- [x] Wdrażać miks: 5 TOFU, 3 MOFU, 2 BOFU.
+- [x] Każdy artykuł budować wg template: Quick Answer -> HowTo/porównanie -> FAQ -> CTA.
+- [x] Każdy artykuł musi mieć min. 4 linki wewnętrzne.
+- [x] Priorytetowo publikować tematy z SEO 4-5 i AI 4-5.
 
 ### Krok 8 - Uruchomienie 2 stron porównawczych BOFU
 - [ ] Opublikować 2 porównania z listy: `Pilsen vs ...`.
@@ -482,7 +482,7 @@ Status: `[]` = do zrobienia, `[x]` = zrobione
 - [ ] Zapewnić linkowanie: calculator <-> cluster <-> pillar.
 
 ### Krok 10 - Domknięcie architektury linkowania i monitoring KPI
-- [ ] Włączyć breadcrumbs na blogu i landingach (`BreadcrumbList`).
-- [ ] Ustawić system “related articles” (2 TOFU + 1 MOFU + 1 BOFU).
-- [ ] Sprawdzić brak stron osieroconych (każda strategiczna strona ma min. 2 linki wejściowe).
-- [ ] Co 2 tygodnie monitorować KPI: indeksacja nowych URL, CTR, pokrycie encji, link depth.
+- [x] Włączyć breadcrumbs na blogu i landingach (`BreadcrumbList`).
+- [x] Ustawić system “related articles” (2 TOFU + 1 MOFU + 1 BOFU).
+- [x] Sprawdzić brak stron osieroconych (każda strategiczna strona ma min. 2 linki wejściowe).
+- [x] Co 2 tygodnie monitorować KPI: indeksacja nowych URL, CTR, pokrycie encji, link depth.

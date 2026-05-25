@@ -8,6 +8,8 @@ type MaterialLandingPageProps = {
 }
 
 export function MaterialLandingPage({ content }: MaterialLandingPageProps) {
+  const breadcrumbLabel = content.slug === 'rozkroj-plyt-mdf' ? 'Rozkrój płyt MDF' : 'Rozkrój sklejki'
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
       <div
@@ -20,6 +22,15 @@ export function MaterialLandingPage({ content }: MaterialLandingPageProps) {
       />
 
       <article className="relative mx-auto w-full max-w-5xl px-6 pt-12 pb-16 md:px-10">
+        <nav className="mb-5 text-sm text-[#5b646d]">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li><Link to="/" className="underline underline-offset-4">Home</Link></li>
+            <li>/</li>
+            <li><Link to="/rozkroj-plyt-meblowych" className="underline underline-offset-4">Rozkrój płyt meblowych</Link></li>
+            <li>/</li>
+            <li className="text-[#111418]">{breadcrumbLabel}</li>
+          </ol>
+        </nav>
         <header className="space-y-4 border border-[#dbe1e7] bg-white/85 p-6" style={{ clipPath: 'inset(0 round 22px)' }}>
           <h1 className="text-4xl leading-tight font-semibold tracking-tight text-[#111418] md:text-5xl">{content.title}</h1>
           <p className="text-base leading-relaxed text-[#3f474f] md:text-lg">{content.intro}</p>
@@ -89,6 +100,26 @@ export function MaterialLandingPage({ content }: MaterialLandingPageProps) {
           >
             {content.cta.label}
           </Link>
+        </section>
+
+        <section className="mt-8 border border-[#dbe1e7] bg-white/85 p-6" style={{ clipPath: 'inset(0 round 20px)' }}>
+          <h2 className="text-xl font-semibold text-[#111418]">Słownik pojęć</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#3f474f]">
+            Jeśli chcesz doprecyzować terminologię technologiczną, przejdź do haseł słownika powiązanych z tym
+            materiałem.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+            {content.glossaryLinks.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="border border-[#dbe1e7] bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#2f3a44] transition-colors hover:bg-[#eef2f6]"
+                style={{ clipPath: 'inset(0 round 12px)' }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </section>
       </article>
     </main>
