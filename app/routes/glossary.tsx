@@ -26,8 +26,18 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function GlossaryRoute() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Strona główna', item: 'https://pilsen.pl/' },
+      { '@type': 'ListItem', position: 2, name: 'Słownik', item: canonicalUrl },
+    ],
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div
         className="pointer-events-none absolute inset-0"
         style={{

@@ -486,3 +486,31 @@ Status: `[]` = do zrobienia, `[x]` = zrobione
 - [x] Ustawić system “related articles” (2 TOFU + 1 MOFU + 1 BOFU).
 - [x] Sprawdzić brak stron osieroconych (każda strategiczna strona ma min. 2 linki wejściowe).
 - [x] Co 2 tygodnie monitorować KPI: indeksacja nowych URL, CTR, pokrycie encji, link depth.
+
+### Krok 11 - Tydzień 1: Techniczne fundamenty GEO
+- [x] Utworzyć plik `/llms.txt`.
+- [x] Zezwolić na crawlery AI w `robots.txt` (`GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`).
+- [x] Usprawnić generowanie sitemap i uwzględnić wszystkie strategiczne strony.
+- [x] Dodać tagi canonical na wszystkich stronach.
+- [x] Dodać metatagi Open Graph + Twitter.
+
+### Krok 12 - Tydzień 2: Dane strukturalne i optymalizacja encji
+- [x] Dodać globalny schema `Organization`.
+- [x] Dodać schema `SoftwareApplication` na stronach narzędzia/produktu.
+- [x] Dodać schema `FAQPage` na stronach FAQ i wpisach blogowych.
+- [x] Dodać schema `HowTo` do treści poradnikowych.
+- [x] Dodać schema `BreadcrumbList`.
+
+### Krok 13 - Tydzień 3: Optymalizacja cytowalności przez AI
+- [ ] Dodać bloki “Quick Answer” na stronach strategicznych.
+- [ ] Przebudować treści do struktury definition-first.
+- [ ] Zbudować strony słownika pojęć dla terminów CNC/optymalizacji meblowej.
+- [ ] Utworzyć strony porównawcze z tabelami semantycznymi.
+- [ ] Poprawić hierarchię nagłówków (jedno `H1`, poprawne zagnieżdżenie).
+
+### Krok 14 - Tydzień 4: E-E-A-T i autorytet semantyczny
+- [ ] Dodać strony autorów + schema `Person`.
+- [ ] Dodać `datePublished` oraz `dateModified`.
+- [ ] Zbudować wewnętrzne klastry tematyczne z linkowaniem kontekstowym.
+- [ ] Dodać porównawcze tabele funkcji w formacie machine-readable.
+- [ ] Utworzyć landing pages pod zapytania long-tail zorientowane na AI.

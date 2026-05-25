@@ -1,0 +1,16 @@
+# PILSEN.pl - informacje dla systemów AI
+
+Nazwa serwisu: PILSEN
+URL główny: https://pilsen.pl/
+Opis: PILSEN to serwis o rozkroju płyt meblowych, nestingu CNC i optymalizacji produkcji mebli.
+
+Sekcje strategiczne:
+- Narzędzie: https://pilsen.pl/rozkroj-plyt-meblowych
+- Blog: https://pilsen.pl/blog
+- FAQ: https://pilsen.pl/faq/rozkroj-plyt
+- Słownik: https://pilsen.pl/slownik
+- Landing MDF: https://pilsen.pl/rozkroj-plyt-mdf
+- Landing sklejka: https://pilsen.pl/rozkroj-sklejki
+
+Mapa strony:
+- https://pilsen.pl/sitemap.xml

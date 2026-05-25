@@ -4,13 +4,22 @@
     <loc>https://pilsen.pl/</loc>
   </url>
   <url>
-    <loc>https://pilsen.pl/coming-soon</loc>
-  </url>
-  <url>
     <loc>https://pilsen.pl/rozkroj-plyt-meblowych</loc>
   </url>
   <url>
     <loc>https://pilsen.pl/blog</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/faq/rozkroj-plyt</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/rozkroj-plyt-mdf</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/rozkroj-sklejki</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik</loc>
   </url>
   <url>
     <loc>https://pilsen.pl/blog/nowosc-rozkroj-zgodnie-z-uslojeniem-plyty</loc>
@@ -23,5 +32,65 @@
   </url>
   <url>
     <loc>https://pilsen.pl/blog/pilsen-aplikacja-do-rozkroju-plyt-meblowych-i-produkcji</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/co-to-jest-rozkroj-plyt-meblowych</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/jak-policzyc-odpad-plyty-meblowej</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/kerf-cnc-wplyw-na-rozkroj</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/cutlist-definicja-format-bledy</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/margines-plyty-cnc</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/jak-wdrozyc-standard-cutlist</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/kpi-rozkroju-i-nestingu</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/roi-software-do-rozkroju</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/pilsen-vs-maxcut</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/blog/pilsen-vs-excel-rozkroj</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/kerf</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/nesting-cnc</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/cutlist</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/formatka</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/uslojenie-plyty</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/odpad-materialowy</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/yield-materialowy</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/margines-technologiczny</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/odstep-bezpieczenstwa</loc>
+  </url>
+  <url>
+    <loc>https://pilsen.pl/slownik/elementy-nieumieszczone</loc>
   </url>
 </urlset>

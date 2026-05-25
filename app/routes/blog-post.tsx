@@ -117,6 +117,15 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
         })),
       }
     : null
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Strona główna', item: `${baseUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${baseUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+    ],
+  }
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eef2f5] text-[#111418]">
@@ -124,6 +133,7 @@ export default function BlogPostRoute({ params }: { params: { slug?: string } })
       {faqJsonLd ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       ) : null}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div
         className="pointer-events-none absolute inset-0"
         style={{

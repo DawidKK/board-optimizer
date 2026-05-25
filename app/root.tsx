@@ -143,6 +143,13 @@ function AnalyticsTracker() {
 export default function AppRoot() {
   const location = useLocation();
   const isPrintRoute = location.pathname === "/rozkroj-plyt-meblowych/druk";
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "PILSEN",
+    url: "https://pilsen.pl",
+    logo: "https://pilsen.pl/favicon.svg",
+  };
 
   if (isPrintRoute) {
     return (
@@ -156,6 +163,10 @@ export default function AppRoot() {
   return (
     <>
       <AnalyticsTracker />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
       <AppNavbar />
       <Outlet />
     </>
