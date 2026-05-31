@@ -86,6 +86,32 @@ const emptyQualityMetrics: QualityMetrics = {
   largestFreeRectArea: 0,
 }
 
+type Size = {
+  width: number
+  height: number
+}
+
+const createPackingRectangle = (
+  item: ExpandedElement,
+  inflated: Size,
+  usableWidth: number,
+  usableHeight: number,
+): Rectangle => {
+  const fitsUnrotated =
+    inflated.width <= usableWidth + FLOAT_EPSILON &&
+    inflated.height <= usableHeight + FLOAT_EPSILON
+  const fitsRotated =
+    inflated.height <= usableWidth + FLOAT_EPSILON &&
+    inflated.width <= usableHeight + FLOAT_EPSILON
+  const shouldPreRotate = item.canRotate && !fitsUnrotated && fitsRotated
+  const rectangle = shouldPreRotate
+    ? new Rectangle(inflated.height, inflated.width, 0, 0, true, item.canRotate)
+    : new Rectangle(inflated.width, inflated.height, 0, 0, false, item.canRotate)
+
+  rectangle.data = item
+  return rectangle
+}
+
 const hasSpacingConflict = (
   first: PlacedElement,
   second: PlacedElement,
@@ -373,15 +399,7 @@ export const packBoard = (
       })
       for (const item of sorted) {
         const inflated = inflateSizeForKerf(item, settings.spacing)
-        const rectangle = new Rectangle(
-          inflated.width,
-          inflated.height,
-          0,
-          0,
-          false,
-          item.canRotate,
-        )
-        rectangle.data = item
+        const rectangle = createPackingRectangle(item, inflated, usableWidth, usableHeight)
         packer.add(rectangle)
       }
       results.push(
