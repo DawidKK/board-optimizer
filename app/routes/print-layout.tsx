@@ -218,6 +218,8 @@ function BoardPrintSvg({
         const topLabelY = item.y + 14;
         const leftLabelX = item.x + 6;
         const leftLabelY = item.y + item.height / 2;
+        const dimensionFontSize =
+          Math.max(9, Math.min(viewWidth, viewHeight) * 0.016) * 3;
 
         return (
           <g key={item.instanceId}>
@@ -235,7 +237,7 @@ function BoardPrintSvg({
               y={leftLabelY}
               textAnchor="start"
               dominantBaseline="middle"
-              fontSize={Math.max(9, Math.min(viewWidth, viewHeight) * 0.016)}
+              fontSize={dimensionFontSize}
               fill="#000000"
               fontWeight={700}
             >
@@ -246,7 +248,7 @@ function BoardPrintSvg({
               y={topLabelY}
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize={Math.max(9, Math.min(viewWidth, viewHeight) * 0.016)}
+              fontSize={dimensionFontSize}
               fill="#000000"
               fontWeight={700}
             >
