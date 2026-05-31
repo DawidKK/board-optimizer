@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { MetaFunction } from "react-router";
 import type { Board, PackResult } from "../../src/optimizer/types";
 
@@ -24,6 +24,20 @@ export const meta: MetaFunction = () => [
   { name: "robots", content: "noindex,nofollow" },
 ];
 
+function readPrintPayload() {
+  if (typeof window === "undefined") return null;
+  const raw = window.localStorage.getItem(PRINT_STORAGE_KEY);
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw) as PrintPayload;
+    if (!parsed?.board || !parsed?.result) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
 function BoardPrintSvg({
   board,
   boardLayout,
@@ -36,7 +50,7 @@ function BoardPrintSvg({
 
   return (
     <svg
-      className="w-full max-w-[1200px] border border-[#111111]"
+      className="print-board-svg w-full max-w-[1200px] border border-[#111111] print:max-w-none"
       viewBox={`0 0 ${viewWidth} ${viewHeight}`}
       role="img"
       aria-label={`Podglad rozkladu elementow na plycie ${boardLayout.boardIndex + 1}`}
@@ -259,7 +273,7 @@ function BoardPrintSvg({
               y={item.y + item.height / 2}
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize={Math.max(10, Math.min(viewWidth, viewHeight) * 0.022)}
+              fontSize={Math.max(10, Math.min(viewWidth, viewHeight) * 0.022) * 3}
               fill="#111111"
               stroke="#ffffff"
               strokeWidth={Math.max(viewWidth, viewHeight) * 0.0014}
@@ -276,21 +290,7 @@ function BoardPrintSvg({
 }
 
 export default function PrintLayoutRoute() {
-  const [payload, setPayload] = useState<PrintPayload | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const raw = window.localStorage.getItem(PRINT_STORAGE_KEY);
-    if (!raw) return;
-
-    try {
-      const parsed = JSON.parse(raw) as PrintPayload;
-      if (!parsed?.board || !parsed?.result) return;
-      setPayload(parsed);
-    } catch {
-      // ignore invalid payload
-    }
-  }, []);
+  const [payload] = useState<PrintPayload | null>(readPrintPayload);
 
   if (!payload) {
     return (
@@ -305,7 +305,51 @@ export default function PrintLayoutRoute() {
 
   return (
     <main className="min-h-screen bg-white p-6 text-black print:p-0">
-      <div className="mx-auto max-w-[1280px] space-y-6 print:max-w-none print:space-y-4">
+      <style>{`
+        @media print {
+          @page {
+            size: A4 landscape;
+            margin: 10mm;
+          }
+
+          html,
+          body {
+            background: #ffffff !important;
+          }
+
+          .print-board-page {
+            box-sizing: border-box;
+            break-after: page;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+            gap: 4mm;
+            width: 277mm;
+            height: 190mm;
+            overflow: hidden;
+          }
+
+          .print-board-page:last-child {
+            break-after: auto;
+            page-break-after: auto;
+          }
+
+          .print-board-canvas {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .print-board-svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+      `}</style>
+      <div className="mx-auto max-w-[1280px] space-y-6 print:max-w-none print:space-y-0">
         <div className="flex items-center justify-between print:hidden">
           <h1 className="text-xl font-semibold">Podglad do druku</h1>
           <button
@@ -320,12 +364,17 @@ export default function PrintLayoutRoute() {
         {payload.result.boards.map((boardLayout) => (
           <section
             key={boardLayout.boardIndex}
-            className="space-y-2 break-inside-avoid"
+            className="print-board-page space-y-2 break-inside-avoid print:break-inside-avoid"
           >
-            <p className="text-sm font-semibold">
-              Plyta {boardLayout.boardIndex + 1}
-            </p>
-            <BoardPrintSvg board={payload.board} boardLayout={boardLayout} />
+            <div className="flex items-end justify-between gap-4 text-sm font-semibold">
+              <p>Plyta {boardLayout.boardIndex + 1}</p>
+              <p className="text-xs font-medium">
+                {payload.board.width} x {payload.board.height} mm
+              </p>
+            </div>
+            <div className="print-board-canvas">
+              <BoardPrintSvg board={payload.board} boardLayout={boardLayout} />
+            </div>
           </section>
         ))}
       </div>
