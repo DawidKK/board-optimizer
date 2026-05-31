@@ -61,11 +61,10 @@ export function ElementsForm({
     "border-[#cfd7df] bg-white text-[#111418] placeholder:text-[#6b7682] focus-visible:border-[#111418]/35 focus-visible:ring-[#111418]/10";
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [draft, setDraft] = useState<Omit<ElementInput, "id">>({
+  const [draft, setDraft] = useState<Pick<ElementInput, "width" | "height" | "quantity">>({
     width: 300,
     height: 200,
     quantity: 1,
-    canRotate: !grainDirectionEnabled,
   });
 
   const update = (
@@ -84,7 +83,10 @@ export function ElementsForm({
     onChange(elements.filter((item) => item.id !== id));
 
   const add = () =>
-    onChange([...elements, { id: createElementId(), ...draft }]);
+    onChange([
+      ...elements,
+      { id: createElementId(), ...draft, canRotate: !grainDirectionEnabled },
+    ]);
 
   return (
     <Card className="border border-[#dbe1e7] bg-white/85 shadow-[0_15px_42px_rgba(17,20,24,0.1)]">
@@ -309,24 +311,13 @@ export function ElementsForm({
                 </Select>
               </div>
 
-              <Label className="gap-3 text-[#111418]">
-                <Checkbox
-                  checked={draft.canRotate ?? !grainDirectionEnabled}
-                  onCheckedChange={(checked) =>
-                    setDraft((current) => ({
-                      ...current,
-                      canRotate: checked === true,
-                    }))
-                  }
-                />
-                Można obracać
-              </Label>
             </div>
 
             <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
+                className="text-white hover:text-white"
                 onClick={() => setIsDialogOpen(false)}
               >
                 Anuluj
@@ -335,10 +326,6 @@ export function ElementsForm({
                 type="button"
                 onClick={() => {
                   add();
-                  setDraft((current) => ({
-                    ...current,
-                    canRotate: !grainDirectionEnabled,
-                  }));
                   setIsDialogOpen(false);
                 }}
               >
