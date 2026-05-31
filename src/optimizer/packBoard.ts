@@ -17,6 +17,7 @@ import type {
 } from './types'
 
 const isPositive = (value: number) => Number.isFinite(value) && value > 0
+const FLOAT_EPSILON = 1e-6
 const BOARD_COUNT_WEIGHT = 1_000_000
 const WASTE_AREA_WEIGHT = 1
 const SMALL_RECTS_WEIGHT = 2
@@ -102,8 +103,8 @@ const hasSpacingConflict = (
   )
   const overlapsY = first.y < second.y + second.height && second.y < first.y + first.height
   const overlapsX = first.x < second.x + second.width && second.x < first.x + first.width
-  const insufficientHorizontalSpacing = overlapsY && horizontalGap < spacing
-  const insufficientVerticalSpacing = overlapsX && verticalGap < spacing
+  const insufficientHorizontalSpacing = overlapsY && horizontalGap + FLOAT_EPSILON < spacing
+  const insufficientVerticalSpacing = overlapsX && verticalGap + FLOAT_EPSILON < spacing
   return insufficientHorizontalSpacing || insufficientVerticalSpacing
 }
 
@@ -117,10 +118,10 @@ const validatePlacedLayout = (
 
   for (const item of placed) {
     const insideBoard =
-      item.x >= boardMargin &&
-      item.y >= boardMargin &&
-      item.x + item.width <= board.width - boardMargin &&
-      item.y + item.height <= board.height - boardMargin
+      item.x + FLOAT_EPSILON >= boardMargin &&
+      item.y + FLOAT_EPSILON >= boardMargin &&
+      item.x + item.width <= board.width - boardMargin + FLOAT_EPSILON &&
+      item.y + item.height <= board.height - boardMargin + FLOAT_EPSILON
 
     if (!insideBoard) {
       invalidIds.add(item.instanceId)

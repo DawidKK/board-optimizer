@@ -9,8 +9,11 @@ type CncSettingsFormProps = {
   onChange: (next: CncCutSettings) => void;
 };
 
-const parseInputNumber = (value: string) =>
-  value === "" ? Number.NaN : Number(value);
+const parseInputNumber = (value: string) => {
+  if (value === "") return Number.NaN;
+  const normalized = value.replace(",", ".");
+  return Number(normalized);
+};
 const displayInputNumber = (value: number) =>
   Number.isFinite(value) ? value : "";
 
