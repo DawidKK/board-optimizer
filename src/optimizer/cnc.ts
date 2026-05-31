@@ -1,9 +1,9 @@
 import type { Board, CncCutSettings, ResolvedCncCutSettings } from './types'
 
 export const DEFAULT_CNC_CUT_SETTINGS: CncCutSettings = {
-  toolDiameter: 6,
-  safetySpacing: 1,
-  boardMargin: 10,
+  toolDiameter: 3,
+  safetySpacing: 0,
+  boardMargin: 5,
 }
 
 const isFiniteNonNegative = (value: number) => Number.isFinite(value) && value >= 0

@@ -33,9 +33,9 @@ const initialElements: ElementInput[] = [
 ];
 
 const initialCncSettings: CncCutSettings = {
-  toolDiameter: 6,
-  safetySpacing: 1,
-  boardMargin: 10,
+  toolDiameter: 3,
+  safetySpacing: 0,
+  boardMargin: 5,
 };
 
 type BoardOptimizerPageProps = {
