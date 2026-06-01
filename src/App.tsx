@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import type {
 import { GRAIN_AXIS_HEIGHT, GRAIN_AXIS_WIDTH } from "./optimizer/types";
 
 const PRINT_STORAGE_KEY = "board-optimizer-print-payload";
+const ELEMENTS_STORAGE_KEY = "board-optimizer-elements-v1";
 
 const initialBoard: Board = {
   width: 2500,
@@ -38,6 +39,39 @@ const initialCncSettings: CncCutSettings = {
   boardMargin: 5,
 };
 
+const isValidElement = (value: unknown): value is ElementInput => {
+  if (!value || typeof value !== "object") return false;
+
+  const candidate = value as Record<string, unknown>;
+
+  return (
+    typeof candidate.id === "string" &&
+    typeof candidate.width === "number" &&
+    Number.isFinite(candidate.width) &&
+    typeof candidate.height === "number" &&
+    Number.isFinite(candidate.height) &&
+    typeof candidate.quantity === "number" &&
+    Number.isFinite(candidate.quantity) &&
+    typeof candidate.canRotate === "boolean"
+  );
+};
+
+const readStoredElements = (): ElementInput[] => {
+  if (typeof window === "undefined") return initialElements;
+
+  const raw = window.localStorage.getItem(ELEMENTS_STORAGE_KEY);
+  if (!raw) return initialElements;
+
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return initialElements;
+    if (!parsed.every(isValidElement)) return initialElements;
+    return parsed;
+  } catch {
+    return initialElements;
+  }
+};
+
 type BoardOptimizerPageProps = {
   prelude?: ReactNode;
 };
@@ -46,8 +80,13 @@ function BoardOptimizerPage({ prelude }: BoardOptimizerPageProps) {
   const [board, setBoard] = useState<Board>(initialBoard);
   const [cncSettings, setCncSettings] =
     useState<CncCutSettings>(initialCncSettings);
-  const [elements, setElements] = useState<ElementInput[]>(initialElements);
+  const [elements, setElements] = useState<ElementInput[]>(() => readStoredElements());
   const [result, setResult] = useState<PackResult | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(ELEMENTS_STORAGE_KEY, JSON.stringify(elements));
+  }, [elements]);
 
   const handleBoardChange = (next: Board) => {
     if (next.grainDirectionEnabled && !board.grainDirectionEnabled) {
