@@ -20,6 +20,7 @@ export type ResolvedCncCutSettings = CncCutSettings & {
 
 export type ElementInput = {
   id: string
+  description: string
   width: number
   height: number
   quantity: number
@@ -31,6 +32,7 @@ export type ExpandedElement = {
   sourceId: string
   rowNumber: number
   itemNumberInRow: number
+  description: string
   width: number
   height: number
   canRotate: boolean
@@ -41,6 +43,7 @@ export type PlacedElement = {
   sourceId: string
   rowNumber: number
   itemNumberInRow: number
+  description: string
   boardIndex: number
   rotated: boolean
   x: number

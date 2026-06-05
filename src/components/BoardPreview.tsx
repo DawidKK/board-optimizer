@@ -134,13 +134,20 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                   )}
                   {boardLayout.placed.map((item) => {
                     const fill = getRowColor(item.rowNumber);
-                    const topLabelY = item.y + 14;
                     const leftLabelX = item.x + 6;
                     const leftLabelY = item.y + item.height / 2;
                     const dimensionFontSize = Math.max(
                       9,
                       Math.min(viewWidth, viewHeight) * 0.016,
                     ) * 3;
+                    const topLabelY =
+                      item.y + Math.max(24, dimensionFontSize * 0.65);
+                    const description = (item.description ?? "").trim();
+                    const descriptionFontSize = dimensionFontSize * 0.65;
+                    const descriptionY =
+                      item.y +
+                      item.height -
+                      Math.max(8, descriptionFontSize * 0.7);
                     return (
                       <g key={item.instanceId}>
                         <rect
@@ -198,20 +205,19 @@ export function BoardPreview({ board, result }: BoardPreviewProps) {
                         >
                           {`${Math.round(item.width)} mm`}
                         </text>
-                        <text
-                          x={item.x + item.width / 2}
-                          y={item.y + item.height / 2}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                          fontSize={Math.max(
-                            10,
-                            Math.min(viewWidth, viewHeight) * 0.022,
-                          )}
-                          fill="#ffffff"
-                          fontWeight={700}
-                        >
-                          {item.itemNumberInRow}
-                        </text>
+                        {description && (
+                          <text
+                            x={item.x + item.width / 2}
+                            y={descriptionY}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            fontSize={descriptionFontSize}
+                            fill="#000000"
+                            fontWeight={700}
+                          >
+                            {description}
+                          </text>
+                        )}
                       </g>
                     );
                   })}

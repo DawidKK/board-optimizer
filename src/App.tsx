@@ -28,9 +28,30 @@ const initialBoard: Board = {
 };
 
 const initialElements: ElementInput[] = [
-  { id: "row-1", width: 600, height: 400, quantity: 2, canRotate: true },
-  { id: "row-2", width: 800, height: 300, quantity: 2, canRotate: true },
-  { id: "row-3", width: 450, height: 250, quantity: 3, canRotate: true },
+  {
+    id: "row-1",
+    description: "",
+    width: 600,
+    height: 400,
+    quantity: 2,
+    canRotate: true,
+  },
+  {
+    id: "row-2",
+    description: "",
+    width: 800,
+    height: 300,
+    quantity: 2,
+    canRotate: true,
+  },
+  {
+    id: "row-3",
+    description: "",
+    width: 450,
+    height: 250,
+    quantity: 3,
+    canRotate: true,
+  },
 ];
 
 const initialCncSettings: CncCutSettings = {
@@ -39,12 +60,12 @@ const initialCncSettings: CncCutSettings = {
   boardMargin: 5,
 };
 
-const isValidElement = (value: unknown): value is ElementInput => {
-  if (!value || typeof value !== "object") return false;
+const normalizeElement = (value: unknown): ElementInput | null => {
+  if (!value || typeof value !== "object") return null;
 
   const candidate = value as Record<string, unknown>;
 
-  return (
+  const isValid =
     typeof candidate.id === "string" &&
     typeof candidate.width === "number" &&
     Number.isFinite(candidate.width) &&
@@ -52,8 +73,24 @@ const isValidElement = (value: unknown): value is ElementInput => {
     Number.isFinite(candidate.height) &&
     typeof candidate.quantity === "number" &&
     Number.isFinite(candidate.quantity) &&
-    typeof candidate.canRotate === "boolean"
-  );
+    typeof candidate.canRotate === "boolean" &&
+    (candidate.description === undefined || typeof candidate.description === "string");
+
+  if (!isValid) return null;
+
+  const description =
+    typeof candidate.description === "string"
+      ? candidate.description.slice(0, 20)
+      : "";
+
+  return {
+    id: candidate.id as string,
+    description,
+    width: candidate.width as number,
+    height: candidate.height as number,
+    quantity: candidate.quantity as number,
+    canRotate: candidate.canRotate as boolean,
+  };
 };
 
 const readStoredElements = (): ElementInput[] => {
@@ -65,8 +102,9 @@ const readStoredElements = (): ElementInput[] => {
   try {
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return initialElements;
-    if (!parsed.every(isValidElement)) return initialElements;
-    return parsed;
+    const normalized = parsed.map(normalizeElement);
+    if (normalized.some((item) => item === null)) return initialElements;
+    return normalized as ElementInput[];
   } catch {
     return initialElements;
   }

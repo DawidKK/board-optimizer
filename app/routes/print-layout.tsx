@@ -61,6 +61,10 @@ function BoardPrintSvg({
         const leftLabelY = item.y + item.height / 2;
         const dimensionFontSize =
           Math.max(9, Math.min(viewWidth, viewHeight) * 0.016) * 3;
+        const description = (item.description ?? "").trim();
+        const descriptionFontSize = dimensionFontSize * 0.65;
+        const descriptionY =
+          item.y + item.height - Math.max(8, descriptionFontSize * 0.7);
 
         return (
           <g key={item.instanceId}>
@@ -95,6 +99,19 @@ function BoardPrintSvg({
             >
               {Math.round(item.width)}
             </text>
+            {description && (
+              <text
+                x={item.x + item.width / 2}
+                y={descriptionY}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize={descriptionFontSize}
+                fill="#000000"
+                fontWeight={700}
+              >
+                {description}
+              </text>
+            )}
           </g>
         );
       })}

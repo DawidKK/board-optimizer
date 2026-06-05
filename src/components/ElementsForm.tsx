@@ -44,6 +44,9 @@ const parseInputNumber = (value: string) =>
   value === "" ? Number.NaN : Number(value);
 const displayInputNumber = (value: number) =>
   Number.isFinite(value) ? value : "";
+const DESCRIPTION_MAX_LENGTH = 20;
+const limitDescription = (value: string) =>
+  value.slice(0, DESCRIPTION_MAX_LENGTH);
 const createElementId = () =>
   typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
     ? crypto.randomUUID()
@@ -61,16 +64,18 @@ export function ElementsForm({
     "border-[#cfd7df] bg-white text-[#111418] placeholder:text-[#6b7682] focus-visible:border-[#111418]/35 focus-visible:ring-[#111418]/10";
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [draft, setDraft] = useState<Pick<ElementInput, "width" | "height" | "quantity">>({
-    width: 300,
-    height: 200,
-    quantity: 1,
-  });
+  const [draft, setDraft] =
+    useState<Pick<ElementInput, "description" | "width" | "height" | "quantity">>({
+      description: "",
+      width: 300,
+      height: 200,
+      quantity: 1,
+    });
 
   const update = (
     id: string,
     key: keyof Omit<ElementInput, "id">,
-    value: number | boolean,
+    value: string | number | boolean,
   ) => {
     onChange(
       elements.map((item) =>
@@ -156,6 +161,7 @@ export function ElementsForm({
                   : ""}
               </TableHead>
               <TableHead>Ilość</TableHead>
+              <TableHead>Opis elementu</TableHead>
               <TableHead className="text-right">Akcje</TableHead>
             </TableRow>
           </TableHeader>
@@ -215,6 +221,21 @@ export function ElementsForm({
                         item.id,
                         "quantity",
                         parseInputNumber(event.target.value),
+                      )
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <Input
+                    type="text"
+                    maxLength={DESCRIPTION_MAX_LENGTH}
+                    className={lightInputClass}
+                    value={item.description ?? ""}
+                    onChange={(event) =>
+                      update(
+                        item.id,
+                        "description",
+                        limitDescription(event.target.value),
                       )
                     }
                   />
@@ -294,6 +315,24 @@ export function ElementsForm({
                     setDraft((current) => ({
                       ...current,
                       quantity: parseInputNumber(event.target.value),
+                    }))
+                  }
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="new-description" className="text-[#111418]">
+                  Opis elementu
+                </Label>
+                <Input
+                  id="new-description"
+                  type="text"
+                  maxLength={DESCRIPTION_MAX_LENGTH}
+                  className={lightInputClass}
+                  value={draft.description}
+                  onChange={(event) =>
+                    setDraft((current) => ({
+                      ...current,
+                      description: limitDescription(event.target.value),
                     }))
                   }
                 />
